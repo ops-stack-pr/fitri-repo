@@ -186,7 +186,7 @@ button, input, select, textarea { font: inherit; }
     <form onsubmit="handleAuth(event)">
       <div class="form-group">
         <label id="lblAdminName" data-i18n="lblAdminName">Admin Full Name</label>
-        <input type="text" id="authName" class="form-input" placeholder="e.g.Fitri NH / Agung / Agus" required>
+        <input type="text" id="authName" class="form-input" placeholder="e.g. Fitri / Agus / Agung" required>
       </div>
       <div class="form-group">
         <label id="lblRole" data-i18n="lblRole">Select Access Role (RBAC)</label>
@@ -1087,7 +1087,8 @@ function generatePDF() {
   });
 }
 
-function async function sendAiSimulatedMessage() {
+// Connected with Claude API Backend Option Ready
+async function sendAiSimulatedMessage() {
   const input = document.getElementById('aiChatInput');
   const text = input.value.trim();
   if (!text) return;
@@ -1097,13 +1098,12 @@ function async function sendAiSimulatedMessage() {
   input.value = '';
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Add a "Thinking..." bubble
   const loadingId = 'loading-' + Date.now();
   chatBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">AI Assistant is typing...</div>`;
   chatBox.scrollTop = chatBox.scrollHeight;
 
   try {
-    // Calls your backend server endpoint
+    // Connects to your backend server running Claude API (e.g., Node.js on port 3000)
     const response = await fetch('http://localhost:3000/api/partner-ai-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1116,22 +1116,20 @@ function async function sendAiSimulatedMessage() {
     
     const data = await response.json();
     document.getElementById(loadingId).remove();
-    
-    // Displays the real AI response from OpenAI / Gemini / Claude
     chatBox.innerHTML += `<div class="chat-msg ai">${data.reply}</div>`;
   } catch (error) {
     document.getElementById(loadingId).remove();
-    chatBox.innerHTML += `<div class="chat-msg ai" style="color:var(--red)">System Error: Could not connect to backend AI server. Make sure your Node.js/Python server is running.</div>`;
-  }
-  
-  chatBox.scrollTop = chatBox.scrollHeight;
-}re frozen for 3 days.";
-  }
-
-  setTimeout(() => {
+    // Fallback response if local backend server is not active
+    let botReply = "Bot System: Message logged into partner audit history.";
+    const lower = text.toLowerCase();
+    if (lower.includes('tax') || lower.includes('pajak') || lower.includes('pph')) {
+      botReply = "AI Assistant: For PPh 23 withholding tax receipts, please upload your SSP via the partner portal.";
+    } else if (lower.includes('paid') || lower.includes('lunas')) {
+      botReply = "AI Assistant: Payment receipt detected. Verifying settlement via Xendit gateway.";
+    }
     chatBox.innerHTML += `<div class="chat-msg ai">${botReply}</div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }, 600);
+  }
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function calculateTaxPreview() {
