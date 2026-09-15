@@ -379,7 +379,7 @@ button, input, select, textarea { font: inherit; }
           </div>
           <div style="display:flex; gap:8px; margin-top:8px">
             <input type="text" id="aiChatInput" class="form-input" placeholder="Type a simulated partner reply (e.g., 'Request extension' or 'Paid')..." data-i18n-placeholder="aiPlaceholder">
-            <button class="btn" onclick="async function sendAiSimulatedMessage() {   const input = document.getElementById('aiChatInput');   const text = input.value.trim();   if (!text) return;    const chatBox = document.getElementById('aiChatBox');   chatBox.innerHTML += `<div class="chat-msg partner">${text}</div>`;   input.value = '';   chatBox.scrollTop = chatBox.scrollHeight;    try {     // Replace with your actual backend endpoint (Node.js, Python FastAPI, etc.)     const response = await fetch('https://your-backend-server.com/api/ai-chat', {       method: 'POST',       headers: { 'Content-Type': 'application/json' },       body: JSON.stringify({ invoiceId: selectedInvoiceId, message: text })     });          const data = await response.json();     chatBox.innerHTML += `<div class="chat-msg ai">AI Bot: ${data.reply}</div>`;   } catch (error) {     chatBox.innerHTML += `<div class="chat-msg ai" style="color:var(--red)">System: Failed to connect to AI webhook.</div>`;   }      chatBox.scrollTop = chatBox.scrollHeight; }" data-i18n="btnSimulateChat">Simulate</button>
+            <button class="btn" onclick="sendAiSimulatedMessage()" data-i18n="btnSimulateChat">Simulate</button>
           </div>
         </div>
 
@@ -812,7 +812,6 @@ const i18n = {
   }
 };
 
-// DATASET WITH FULL INDONESIAN TAX LAWS (PPN 11% UU HPP, PBJT Olahraga 10% UU HKPD, PPh 23 2%)
 let invoices = [
   { id: 'INV-001', p: 'PT Alpha Media', due: '2026-09-18', date: '2026-08-15', amount: 25000000, ppn: true, pbjt: true, pph: true, status: 'Due Soon' },
   { id: 'INV-002', p: 'PT Beta Teknologi', due: '2026-09-10', date: '2026-08-10', amount: 18000000, ppn: true, pbjt: true, pph: true, status: 'Overdue' },
@@ -835,11 +834,10 @@ let pushLogs = [
   { inv: 'INV-004', p: 'PT Delta Indonesia', h7: false, h3: false, h1: false, email: false, sms: false, wa: false, response: 'Scheduled' }
 ];
 
-// TAX CALCULATION HELPER (UU HPP PPN 11%, PBJT Olahraga 10% UU HKPD, PPh 23 2%)
 function calcTax(dpp, hasPpn, hasPbjt, hasPph) {
   const ppnVal = hasPpn ? dpp * 0.11 : 0;
-  const pbjtVal = hasPbjt ? dpp * 0.10 : 0; // PBJT Olahraga 10%
-  const pphVal = hasPph ? dpp * 0.02 : 0; // PPh 23 (2%)
+  const pbjtVal = hasPbjt ? dpp * 0.10 : 0;
+  const pphVal = hasPph ? dpp * 0.02 : 0;
   const netPayable = dpp + ppnVal + pbjtVal - pphVal;
   return { dpp, ppnVal, pbjtVal, pphVal, netPayable };
 }
@@ -1089,7 +1087,7 @@ function generatePDF() {
   });
 }
 
-function async function sendAiSimulatedMessage() {   const input = document.getElementById('aiChatInput');   const text = input.value.trim();   if (!text) return;    const chatBox = document.getElementById('aiChatBox');   chatBox.innerHTML += `<div class="chat-msg partner">${text}</div>`;   input.value = '';   chatBox.scrollTop = chatBox.scrollHeight;    try {     // Replace with your actual backend endpoint (Node.js, Python FastAPI, etc.)     const response = await fetch('https://your-backend-server.com/api/ai-chat', {       method: 'POST',       headers: { 'Content-Type': 'application/json' },       body: JSON.stringify({ invoiceId: selectedInvoiceId, message: text })     });          const data = await response.json();     chatBox.innerHTML += `<div class="chat-msg ai">AI Bot: ${data.reply}</div>`;   } catch (error) {     chatBox.innerHTML += `<div class="chat-msg ai" style="color:var(--red)">System: Failed to connect to AI webhook.</div>`;   }      chatBox.scrollTop = chatBox.scrollHeight; } {
+function sendAiSimulatedMessage() {
   const input = document.getElementById('aiChatInput');
   const text = input.value.trim();
   if (!text) return;
