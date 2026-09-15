@@ -1087,7 +1087,7 @@ function generatePDF() {
   });
 }
 
-function sendAiSimulatedMessage() {
+function async function sendAiSimulatedMessage() {
   const input = document.getElementById('aiChatInput');
   const text = input.value.trim();
   if (!text) return;
@@ -1095,13 +1095,37 @@ function sendAiSimulatedMessage() {
   const chatBox = document.getElementById('aiChatBox');
   chatBox.innerHTML += `<div class="chat-msg partner">${text}</div>`;
   input.value = '';
+  chatBox.scrollTop = chatBox.scrollHeight;
 
-  let botReply = "Bot System: Message logged into partner audit history.";
-  const lower = text.toLowerCase();
-  if (lower.includes('paid') || lower.includes('transfer') || lower.includes('lunas')) {
-    botReply = "Bot System: Payment receipt detected. Updating status to Pending Settlement Verification.";
-  } else if (lower.includes('extend') || lower.includes('tempo') || lower.includes('perpanjang')) {
-    botReply = "Bot System: Extension request forwarded to GBK Finance PIC. Overdue score frozen for 3 days.";
+  // Add a "Thinking..." bubble
+  const loadingId = 'loading-' + Date.now();
+  chatBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">AI Assistant is typing...</div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  try {
+    // Calls your backend server endpoint
+    const response = await fetch('http://localhost:3000/api/partner-ai-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        invoiceId: selectedInvoiceId, 
+        message: text,
+        partnerName: document.getElementById('dPartner').textContent 
+      })
+    });
+    
+    const data = await response.json();
+    document.getElementById(loadingId).remove();
+    
+    // Displays the real AI response from OpenAI / Gemini / Claude
+    chatBox.innerHTML += `<div class="chat-msg ai">${data.reply}</div>`;
+  } catch (error) {
+    document.getElementById(loadingId).remove();
+    chatBox.innerHTML += `<div class="chat-msg ai" style="color:var(--red)">System Error: Could not connect to backend AI server. Make sure your Node.js/Python server is running.</div>`;
+  }
+  
+  chatBox.scrollTop = chatBox.scrollHeight;
+}re frozen for 3 days.";
   }
 
   setTimeout(() => {
