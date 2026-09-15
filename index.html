@@ -1,173 +1,247 @@
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Smart Partner Tracker — Enterprise Edition</title>
 <style>
 :root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --card-border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --line: #e2e8f0;
+  --blue: #2563eb;
+  --blue-subtle: #eff6ff;
+  --blue-border: #bfdbfe;
+  --green: #16a34a;
+  --green-subtle: #f0fdf4;
+  --green-border: #bbf7d0;
+  --yellow: #d97706;
+  --yellow-subtle: #fffbeb;
+  --yellow-border: #fef08a;
+  --red: #dc2626;
+  --red-subtle: #fef2f2;
+  --red-border: #fecaca;
+  --xendit: #4f46e5;
+  --xendit-subtle: #eef2ff;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --topbar-bg: #ffffff;
+  --shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="dark"] {
   --bg: #0f172a;
   --card: #1e293b;
   --card-border: #334155;
   --text: #f8fafc;
-  --muted: #94a3b8;
+  --text-muted: #94a3b8;
   --line: #334155;
   --blue: #3b82f6;
-  --blue-glow: rgba(59, 130, 246, 0.2);
+  --blue-subtle: rgba(59, 130, 246, 0.15);
+  --blue-border: #1d4ed8;
   --green: #22c55e;
-  --green-glow: rgba(34, 197, 94, 0.2);
+  --green-subtle: rgba(34, 197, 94, 0.15);
+  --green-border: #15803d;
   --yellow: #f59e0b;
-  --yellow-glow: rgba(245, 158, 11, 0.2);
+  --yellow-subtle: rgba(245, 158, 11, 0.15);
+  --yellow-border: #b45309;
   --red: #ef4444;
-  --red-glow: rgba(239, 68, 68, 0.2);
-  --xendit: #4f46e5;
-  --whatsapp: #25d366;
+  --red-subtle: rgba(239, 68, 68, 0.15);
+  --red-border: #b91c1c;
+  --xendit: #6366f1;
+  --xendit-subtle: rgba(99, 102, 241, 0.15);
+  --sidebar-bg: #0b0f19;
+  --sidebar-border: #1e293b;
+  --topbar-bg: #1e293b;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
-* { box-sizing: border-box; }
-body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
-button, input, select { font: inherit; }
 
-/* Auth & Language Modal */
-.auth-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; }
-.auth-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 32px; width: 100%; max-width: 440px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-.lang-selector { display: flex; gap: 8px; margin-bottom: 20px; background: #0f172a; padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); }
-.lang-btn { flex: 1; border: 0; background: transparent; color: var(--muted); padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+* { box-sizing: border-box; transition: background-color 0.2s ease, border-color 0.2s ease; }
+body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+button, input, select, textarea { font: inherit; }
+
+/* Auth Overlay */
+.auth-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.auth-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 32px; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); }
+
+/* Layout Structure */
+.app { display: flex; min-height: 100vh; }
+.side { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--sidebar-border); padding: 24px 16px; position: fixed; inset: 0 auto 0 0; display: flex; flex-direction: column; justify-content: space-between; z-index: 100; }
+.brand { display: flex; align-items: center; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.brand img { max-height: 42px; width: auto; object-fit: contain; }
+.brand-text { font-weight: 800; font-size: 16px; line-height: 1.2; color: var(--text); }
+.brand-text span { display: block; font-size: 10px; text-transform: uppercase; color: var(--blue); letter-spacing: 0.08em; font-weight: 700; margin-top: 2px; }
+
+.nav { display: grid; gap: 6px; margin-top: 24px; }
+.nav button { border: 0; background: transparent; color: var(--text-muted); text-align: left; padding: 12px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13.5px; display: flex; align-items: center; gap: 10px; }
+.nav button:hover, .nav button.active { background: var(--blue-subtle); color: var(--blue); font-weight: 700; }
+
+.main { margin-left: 260px; width: calc(100% - 260px); padding: 32px; max-width: 1550px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; background: var(--topbar-bg); padding: 16px 24px; border-radius: 14px; border: 1px solid var(--card-border); box-shadow: var(--shadow); }
+.greeting { font-size: 22px; font-weight: 800; color: var(--text); }
+.sub-greeting { color: var(--text-muted); font-size: 12.5px; margin-top: 2px; }
+.controls-group { display: flex; gap: 10px; align-items: center; }
+
+/* Theme & Language Toggles */
+.toggle-btn { background: var(--card); border: 1px solid var(--card-border); color: var(--text); padding: 8px 12px; border-radius: 9px; cursor: pointer; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+.toggle-btn:hover { border-color: var(--blue); }
+.lang-selector { display: flex; background: var(--bg); padding: 3px; border-radius: 10px; border: 1px solid var(--card-border); }
+.lang-btn { border: 0; background: transparent; color: var(--text-muted); padding: 6px 10px; border-radius: 7px; cursor: pointer; font-weight: 700; font-size: 12px; }
 .lang-btn.active { background: var(--blue); color: #fff; }
 
-.form-group { margin-bottom: 16px; text-align: left; }
-.form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
-.form-input { width: 100%; background: #0f172a; border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: 10px; outline: none; }
-.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-glow); }
+.clock-card { background: var(--bg); border: 1px solid var(--card-border); padding: 7px 12px; border-radius: 9px; font-family: monospace; font-size: 12px; font-weight: 700; color: var(--blue); display: flex; align-items: center; gap: 6px; }
 
-/* Layout */
-.app { display: flex; min-height: 100vh; }
-.side { width: 260px; background: #090d16; color: #fff; padding: 24px 16px; position: fixed; inset: 0 auto 0 0; border-right: 1px solid var(--card-border); }
-.brand { font-weight: 800; font-size: 18px; line-height: 1.2; padding: 0 8px 24px; border-bottom: 1px solid var(--card-border); }
-.brand span { display: block; color: var(--blue); font-size: 11px; font-weight: 600; margin-top: 4px; letter-spacing: 0.05em; }
-.nav { display: grid; gap: 6px; margin-top: 20px; }
-.nav button { border: 0; background: transparent; color: var(--muted); text-align: left; padding: 12px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
-.nav button:hover, .nav button.active { background: var(--card); color: #fff; border: 1px solid var(--card-border); }
-
-.main { margin-left: 260px; width: calc(100% - 260px); padding: 32px; max-width: 1600px; }
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
-.greeting { font-size: 26px; font-weight: 800; }
-.clock-card { background: var(--card); border: 1px solid var(--card-border); padding: 10px 16px; border-radius: 12px; font-family: monospace; font-size: 14px; color: var(--blue); display: flex; align-items: center; gap: 8px; }
-
-/* Screens & Cards */
+/* Screens & Dynamic Elements */
 .screen { display: none; }
 .screen.active { display: block; }
 .grid { display: grid; gap: 20px; }
 .metrics { grid-template-columns: repeat(5, 1fr); }
-.card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-.metric { cursor: pointer; transition: 0.2s; }
-.metric:hover { transform: translateY(-3px); border-color: var(--blue); }
-.metric .label { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-.metric .num { font-size: 32px; font-weight: 800; margin: 10px 0 4px; }
-.metric .hint { font-size: 12px; color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+
+.metric { cursor: pointer; }
+.metric:hover { transform: translateY(-2px); border-color: var(--blue); }
+.metric .label { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.metric .num { font-size: 30px; font-weight: 900; margin: 8px 0 2px; color: var(--text); }
+.metric .hint { font-size: 11.5px; color: var(--text-muted); }
 
 /* Badges & Pills */
-.pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; }
-.pill.on { background: var(--blue-glow); color: var(--blue); border: 1px solid var(--blue); }
-.pill.due { background: var(--yellow-glow); color: var(--yellow); border: 1px solid var(--yellow); }
-.pill.over { background: var(--red-glow); color: var(--red); border: 1px solid var(--red); }
-.pill.paid { background: var(--green-glow); color: var(--green); border: 1px solid var(--green); }
-
-/* Channel Badges */
-.ch-badge { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; }
-.ch-email { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid #3b82f6; }
-.ch-sms { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #f59e0b; }
-.ch-wa { background: rgba(37, 211, 102, 0.15); color: #4ade80; border: 1px solid #25d366; }
+.pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; }
+.pill.on { background: var(--blue-subtle); color: var(--blue); border-color: var(--blue-border); }
+.pill.due { background: var(--yellow-subtle); color: var(--yellow); border-color: var(--yellow-border); }
+.pill.over { background: var(--red-subtle); color: var(--red); border-color: var(--red-border); }
+.pill.paid { background: var(--green-subtle); color: var(--green); border-color: var(--green-border); }
 
 /* Tables */
-.table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
-.table th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 14px 12px; border-bottom: 1px solid var(--line); }
-.table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-.table tr.clickable { cursor: pointer; transition: 0.15s; }
-.table tr.clickable:hover { background: rgba(255,255,255,0.02); }
+.table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
+.table th { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 10px; border-bottom: 1px solid var(--line); font-weight: 700; }
+.table td { padding: 14px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.table tr.clickable { cursor: pointer; }
+.table tr.clickable:hover { background: var(--blue-subtle); }
+
+/* Form Components */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-input { width: 100%; background: var(--bg); border: 1px solid var(--card-border); color: var(--text); padding: 11px 14px; border-radius: 10px; outline: none; }
+.form-input:focus { border-color: var(--blue); }
 
 /* Buttons */
-.btn { border: 0; background: var(--blue); color: #fff; border-radius: 10px; padding: 10px 16px; cursor: pointer; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
-.btn:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-xendit { background: var(--xendit); color: #fff; box-shadow: 0 0 15px rgba(79, 70, 229, 0.4); }
-.btn-secondary { background: #334155; color: #fff; }
-
-/* Dynamic Breakdown Search Screen */
-.search-container { display: flex; gap: 12px; margin-bottom: 20px; }
-.search-input { flex: 1; background: #0f172a; border: 1px solid var(--card-border); padding: 14px; border-radius: 12px; color: #fff; outline: none; font-size: 15px; }
-.search-input:focus { border-color: var(--blue); }
-
-.debt-breakdown { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-top: 20px; }
-.debt-card { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--red); border-radius: 14px; padding: 20px; }
+.btn { border: 0; background: var(--blue); color: #fff; border-radius: 9px; padding: 9px 15px; cursor: pointer; font-weight: 700; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px; }
+.btn:hover { opacity: 0.92; }
+.btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--card-border); }
+.btn-secondary:hover { border-color: var(--text-muted); }
+.btn-xendit { background: var(--xendit); color: #fff; }
+.btn-ghost { background: transparent; color: var(--blue); padding: 5px 8px; }
 
 /* Modals */
-.modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; }
-.modal-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; width: 100%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 28px; width: 100%; max-width: 540px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
+
+/* Channel Notif Badges */
+.ch-badge { font-size: 10px; font-weight: 800; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; }
+.ch-email { background: var(--blue-subtle); color: var(--blue); border: 1px solid var(--blue-border); }
+.ch-sms { background: var(--yellow-subtle); color: var(--yellow); border: 1px solid var(--yellow-border); }
+.ch-wa { background: var(--green-subtle); color: var(--green); border: 1px solid var(--green-border); }
+
+/* Timeline UI */
+.timeline { display: grid; gap: 12px; margin: 16px 0; }
+.event { display: grid; grid-template-columns: 80px 1fr; gap: 14px; padding: 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--card-border); }
+.event b { font-size: 12px; color: var(--text); }
+.event small { color: var(--text-muted); font-size: 11px; }
+
+/* Infographics & Progress Bars */
+.progress-bar-bg { height: 9px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--blue); border-radius: 99px; }
+.barrow { display: grid; grid-template-columns: 180px 1fr 50px; gap: 12px; align-items: center; margin: 12px 0; font-size: 12px; }
 
 /* Toast */
-.toast-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 1100; }
-.toast { background: var(--card); border: 1px solid var(--card-border); color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 12px; min-width: 300px; animation: slideIn 0.3s ease; }
-@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.toast-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 8px; z-index: 1100; }
+.toast { background: var(--card); border: 1px solid var(--card-border); color: var(--text); padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; animation: slideIn 0.25s ease; }
+@keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-@media(max-width: 1024px) {
-  .side { width: 80px; padding: 16px 8px; }
-  .brand span, .nav button span { display: none; }
-  .main { margin-left: 80px; width: calc(100% - 80px); }
+@media(max-width: 950px) {
+  .side { width: 70px; padding: 16px 8px; }
+  .brand-text, .nav button span { display: none; }
+  .main { margin-left: 70px; width: calc(100% - 70px); padding: 16px; }
   .metrics { grid-template-columns: repeat(2, 1fr); }
-  .debt-breakdown { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- AUTH & LANGUAGE SELECTION MODAL -->
+<!-- AUTHENTICATION & LANGUAGE MODAL -->
 <div id="authModal" class="auth-overlay">
   <div class="auth-box">
-    <div class="lang-selector">
-      <button class="lang-btn active" onclick="setLanguage('en')">🇬🇧 English</button>
-      <button class="lang-btn" onclick="setLanguage('id')">🇮🇩 Bahasa Indonesia</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <img src="logo-gbk.png" alt="GBK Logo" onerror="this.style.display='none'" style="height:32px">
+        <b style="font-size:16px">Smart Partner Tracker</b>
+      </div>
+      <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="setLanguage('id')">ID</button>
+      </div>
     </div>
-    <h2 id="authTitle" style="margin-top:0">Portal Access</h2>
-    <p id="authSub" style="color:var(--muted); font-size:13px">Please enter your display name to start the admin session.</p>
+    <h3 id="authTitle" style="margin:0 0 6px">Sign In to Dashboard</h3>
+    <p id="authSub" style="color:var(--text-muted); font-size:12.5px; margin:0 0 18px">Please input your admin display name. Password is dummy validated.</p>
     <form onsubmit="handleAuth(event)">
       <div class="form-group">
         <label id="lblAdminName">Admin Full Name</label>
-        <input type="text" id="authName" class="form-input" placeholder="e.g. Alex Rivera" required>
+        <input type="text" id="authName" class="form-input" placeholder="e.g. Fitri NH / Ries" required>
       </div>
       <div class="form-group">
-        <label id="lblPassword">Password (Dummy Validation)</label>
+        <label id="lblPassword">Password (Any Same Password)</label>
         <input type="password" class="form-input" value="••••••••" required>
       </div>
-      <button type="submit" class="btn" style="width:100%; justify-content:center" id="btnLogin">Sign In to Dashboard →</button>
+      <button type="submit" class="btn" style="width:100%; justify-content:center; padding:12px" id="btnLogin">Sign In →</button>
     </form>
   </div>
 </div>
 
 <div class="app">
+  <!-- SIDEBAR -->
   <aside class="side">
-    <div class="brand">
-      TRACKER <span>ENTERPRISE v3.0</span>
+    <div>
+      <div class="brand">
+        <img src="logo-gbk.png" alt="GBK Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/40/2563eb/ffffff?text=GBK'">
+        <div class="brand-text">
+          GBK TRACKER
+          <span data-i18n="brandSub">Enterprise Management</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="active" onclick="go('dashboard')" data-nav="dashboard">▦ <span data-i18n="navDash">Dashboard</span></button>
+        <button onclick="go('invoices')" data-nav="invoices">▤ <span data-i18n="navInvoices">Invoice Tracker</span></button>
+        <button onclick="go('reminders')" data-nav="reminders">🔔 <span data-i18n="navReminders">Reminder Status Log</span></button>
+        <button onclick="go('scores')" data-nav="scores">★ <span data-i18n="navScores">Partner Performance</span></button>
+      </nav>
     </div>
-    <nav class="nav">
-      <button class="active" onclick="go('dashboard')" data-nav="dashboard">▦ <span data-i18n="navDash">Dashboard</span></button>
-      <button onclick="go('invoices')" data-nav="invoices">▤ <span data-i18n="navInvoices">Invoices & Query</span></button>
-      <button onclick="go('reminders')" data-nav="reminders">🔔 <span data-i18n="navReminders">Push Notif Hub</span></button>
-      <button onclick="go('scores')" data-nav="scores">★ <span data-i18n="navScores">Partner Scoring</span></button>
-    </nav>
+    <div style="font-size:11px; color:var(--text-muted); border-top:1px solid var(--line); padding-top:14px">
+      © 2026 PPKGBK • Smart System
+    </div>
   </aside>
 
+  <!-- MAIN CONTENT AREA -->
   <main class="main">
+    <!-- TOP BAR -->
     <div class="top-bar">
       <div>
-        <div class="greeting" id="dynGreeting">Welcome</div>
-        <div style="color:var(--muted); font-size:13px; margin-top:4px" id="dynSub">Real-time multitenant partner debt monitoring</div>
+        <div class="greeting" id="dynGreeting">Good Day 👋</div>
+        <div class="sub-greeting" id="dynSub">Monitoring invoice status, push reminders & partner performance</div>
       </div>
-      <div style="display:flex; gap:12px; align-items:center">
-        <div class="lang-selector" style="margin:0">
+      <div class="controls-group">
+        <button class="toggle-btn" onclick="toggleTheme()">
+          <span id="themeIcon">🌙</span> <span id="themeLabel">Dark</span>
+        </button>
+        <div class="lang-selector">
           <button class="lang-btn active" id="btnLangEn" onclick="setLanguage('en')">EN</button>
           <button class="lang-btn" id="btnLangId" onclick="setLanguage('id')">ID</button>
         </div>
         <div class="clock-card">
-          <span>🕒</span>
-          <span id="realTimeClock">--:--:--</span>
+          <span>🕒</span> <span id="realTimeClock">--:--:--</span>
         </div>
       </div>
     </div>
@@ -175,16 +249,16 @@ button, input, select { font: inherit; }
     <!-- SCREEN 1: DASHBOARD -->
     <section id="dashboard" class="screen active">
       <div class="grid metrics">
-        <div class="card metric" onclick="filterAndGo('All')"><div class="label" data-i18n="mTotal">TOTAL INVOICES</div><div class="num" id="mTotalVal">0</div><div class="hint" data-i18n="mClickView">Click to view all</div></div>
-        <div class="card metric" onclick="filterAndGo('On Track')"><div class="label" style="color:var(--blue)" data-i18n="mOnTrack">● ON TRACK</div><div class="num" id="mOnTrackVal">0</div><div class="hint">> 7 Days Left</div></div>
-        <div class="card metric" onclick="filterAndGo('Due Soon')"><div class="label" style="color:var(--yellow)" data-i18n="mDueSoon">● DUE SOON</div><div class="num" id="mDueSoonVal">0</div><div class="hint">1-7 Days Left</div></div>
-        <div class="card metric" onclick="filterAndGo('Overdue')"><div class="label" style="color:var(--red)" data-i18n="mOverdue">● OVERDUE</div><div class="num" id="mOverdueVal">0</div><div class="hint">Past Due Date</div></div>
-        <div class="card metric" onclick="filterAndGo('Paid')"><div class="label" style="color:var(--green)" data-i18n="mPaid">● PAID</div><div class="num" id="mPaidVal">0</div><div class="hint">Settled via Xendit/Bank</div></div>
+        <div class="card metric" onclick="filterFromDash('All')"><div class="label" data-i18n="mTotal">TOTAL INVOICES</div><div class="num" id="mTotalVal">0</div><div class="hint" data-i18n="mClickView">Click to view all</div></div>
+        <div class="card metric" onclick="filterFromDash('On Track')"><div class="label" style="color:var(--blue)" data-i18n="mOnTrack">● ON TRACK</div><div class="num" id="mOnTrackVal">0</div><div class="hint">> H-7 Left</div></div>
+        <div class="card metric" onclick="filterFromDash('Due Soon')"><div class="label" style="color:var(--yellow)" data-i18n="mDueSoon">● DUE SOON</div><div class="num" id="mDueSoonVal">0</div><div class="hint">H-7 to H-1</div></div>
+        <div class="card metric" onclick="filterFromDash('Overdue')"><div class="label" style="color:var(--red)" data-i18n="mOverdue">● OVERDUE</div><div class="num" id="mOverdueVal">0</div><div class="hint">Past Due Date</div></div>
+        <div class="card metric" onclick="filterFromDash('Paid')"><div class="label" style="color:var(--green)" data-i18n="mPaid">● PAID</div><div class="num" id="mPaidVal">0</div><div class="hint">Settled via Xendit</div></div>
       </div>
 
-      <div class="grid" style="grid-template-columns: 1.5fr 1fr; margin-top:20px">
+      <div class="grid" style="grid-template-columns: 1.4fr 1fr; margin-top:20px">
         <div class="card">
-          <div style="font-weight:800; font-size:16px; margin-bottom:14px" data-i18n="urgentAction">⚠️ Immediate Action Required</div>
+          <div style="font-weight:800; font-size:15px; margin-bottom:14px" data-i18n="attnTitle">⚠️ Immediate Attention Needed</div>
           <table class="table">
             <thead>
               <tr>
@@ -199,212 +273,340 @@ button, input, select { font: inherit; }
           </table>
         </div>
         <div class="card">
-          <div style="font-weight:800; font-size:16px; margin-bottom:14px" data-i18n="pushFeed">⚡ Live Push Notification Hub</div>
-          <div id="livePushFeed" style="display:grid; gap:10px"></div>
+          <div style="font-weight:800; font-size:15px; margin-bottom:14px" data-i18n="topPartners">🏆 Top Reliable Partners</div>
+          <div id="dashTopPartners" style="display:grid; gap:10px"></div>
         </div>
       </div>
     </section>
 
-    <!-- SCREEN 2: INVOICES & SEARCH BREAKDOWN -->
+    <!-- SCREEN 2: INVOICE TRACKER & SEARCH BREAKDOWN -->
     <section id="invoices" class="screen">
       <div class="card">
-        <div class="search-container">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Query by Invoice Tag (e.g., INV-004) or Company Name..." oninput="handleSearch()">
-          <button class="btn" onclick="openNewInvoiceModal()">+ <span data-i18n="btnNewInv">New Invoice</span></button>
-        </div>
-
-        <div id="searchBreakdown" style="display:none" class="debt-breakdown">
-          <div class="debt-card">
-            <div style="font-size:12px; font-weight:700; color:var(--red); text-transform:uppercase" data-i18n="partnerDebtSummary">Partner Total Outstanding Debt</div>
-            <div style="font-size:28px; font-weight:900; color:var(--red); margin:8px 0" id="breakdownTotal">Rp 0</div>
-            <div style="font-size:13px; color:var(--muted)" id="breakdownMeta">3 Outstanding Invoices</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px">
+          <div style="flex:1; min-width:280px; display:flex; gap:10px">
+            <input type="text" id="searchInput" class="form-input" placeholder="🔍 Query tag (e.g., INV-002) or Company Name..." oninput="renderInvoices()">
           </div>
-          <div style="background:#0f172a; border-radius:14px; padding:16px; border:1px solid var(--card-border)">
-            <div style="font-weight:700; font-size:13px; margin-bottom:8px" data-i18n="billHistory">Historical Billing & Ledger</div>
-            <div id="breakdownHistoryList" style="display:grid; gap:6px; max-height:120px; overflow-y:auto"></div>
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="openNewInvoiceModal()">+ <span data-i18n="btnNewInv">Create Invoice</span></button>
           </div>
         </div>
 
-        <table class="table" style="margin-top:20px">
+        <!-- SEARCH BREAKDOWN BOX FOR COMPANY DEBTS -->
+        <div id="searchBreakdown" style="display:none; background:var(--bg); border:1px solid var(--card-border); border-radius:14px; padding:18px; margin-bottom:18px">
+          <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px">
+            <div>
+              <small style="font-size:11px; font-weight:800; color:var(--red); text-transform:uppercase" data-i18n="breakdownTitle">Company Total Outstanding Debt</small>
+              <div style="font-size:26px; font-weight:900; color:var(--red); margin:6px 0" id="bkTotalDebt">Rp 0</div>
+              <div style="font-size:12px; color:var(--text-muted)" id="bkUnpaidCount">0 Active Unpaid Bills</div>
+            </div>
+            <div>
+              <small style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase" data-i18n="bkLedger">Billing History Breakdown</small>
+              <div id="bkHistoryRows" style="display:grid; gap:6px; margin-top:8px; max-height:100px; overflow-y:auto"></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="table">
           <thead>
             <tr>
-              <th data-i18n="thTag">Tag #</th>
+              <th data-i18n="thInv">Tag #</th>
               <th data-i18n="thPartner">Partner Company</th>
               <th data-i18n="thDueDate">Due Date</th>
               <th data-i18n="thAmount">Amount</th>
               <th data-i18n="thStatus">Status</th>
-              <th data-i18n="thGateway">Xendit Payment</th>
+              <th data-i18n="thGateway">Xendit Gateway</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody id="invoiceTableRows"></tbody>
+          <tbody id="invoiceRows"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- SCREEN 3: REMINDERS & PUSH PROOF -->
+    <!-- SCREEN 2.5: DETAILED INVOICE VIEW -->
+    <section id="invoiceDetail" class="screen">
+      <div class="card" style="max-width:900px">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start">
+          <div>
+            <div style="font-size:11px; font-weight:800; color:var(--blue); text-transform:uppercase" data-i18n="invDetailTitle">Invoice Detailed Inspection</div>
+            <h1 style="margin:4px 0 2px; font-size:26px" id="dInvoice">INV-001</h1>
+            <div style="color:var(--text-muted); font-size:14px" id="dPartner">PT Alpha Media</div>
+          </div>
+          <div id="dStatusBadge"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin:20px 0">
+          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--text-muted); font-size:11px; font-weight:700" data-i18n="lblAmount">INVOICE AMOUNT</small>
+            <div style="font-size:18px; font-weight:800; margin-top:4px" id="dAmount">Rp 0</div>
+          </div>
+          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--text-muted); font-size:11px; font-weight:700" data-i18n="lblInvDate">INVOICE DATE</small>
+            <div style="font-size:15px; font-weight:700; margin-top:6px" id="dDate">15 Aug 2026</div>
+          </div>
+          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--text-muted); font-size:11px; font-weight:700" data-i18n="lblDueDate">DUE DATE</small>
+            <div style="font-size:15px; font-weight:700; margin-top:6px" id="dDue">15 Sep 2026</div>
+          </div>
+        </div>
+
+        <div style="font-weight:800; font-size:15px; margin-top:20px" data-i18n="lifecycleTitle">🔔 Auto Push Reminder Lifecycle (H-7, H-3, H-1)</div>
+        <div class="timeline" id="dTimeline"></div>
+
+        <div style="font-weight:800; font-size:15px; margin-top:22px" data-i18n="paymentSec">💰 Payment Gateway & Settlement</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:16px; border-radius:12px; border:1px solid var(--card-border); margin-top:10px">
+          <div>
+            <b id="dPaymentText" style="font-size:14.5px">Belum Dibayar</b>
+            <div style="color:var(--text-muted); font-size:12px; margin-top:2px" data-i18n="paymentSub">Simulate Xendit gateway collection flow or manual payment verification.</div>
+          </div>
+          <div id="dPaymentAction"></div>
+        </div>
+
+        <div style="margin-top:24px">
+          <button class="btn btn-secondary" onclick="go('invoices')">← <span data-i18n="btnBack">Back to Tracker</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: REMINDER STATUS LOG & PUSH HUB -->
     <section id="reminders" class="screen">
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px">
           <div>
-            <div style="font-weight:800; font-size:18px" data-i18n="auditTitle">Push Notification Delivery Audit Log</div>
-            <div style="font-size:13px; color:var(--muted)" data-i18n="auditSub">Legal proof of automated dispatches via Email, SMS, and WhatsApp</div>
+            <div style="font-weight:800; font-size:18px" data-i18n="reminderHubTitle">🔔 Reminder Status Log & Push Notification Hub</div>
+            <div style="color:var(--text-muted); font-size:12.5px" data-i18n="reminderHubSub">Live delivery logs for Email, SMS & WhatsApp notifications with anti-backlash proof</div>
           </div>
-          <button class="btn btn-secondary" onclick="triggerMassPush()" data-i18n="btnSimulatePush">🚀 Simulate Auto Push Dispatch</button>
+          <button class="btn" onclick="triggerMassPush()"><span data-i18n="btnSimulateMass">🚀 Trigger Auto Push to All</span></button>
         </div>
+
         <table class="table">
           <thead>
             <tr>
-              <th data-i18n="thTimestamp">Dispatch Time</th>
               <th data-i18n="thInv">Invoice</th>
               <th data-i18n="thPartner">Partner</th>
-              <th data-i18n="thChannel">Channel</th>
-              <th data-i18n="thDeliveryStatus">Delivery Receipt</th>
-              <th data-i18n="thProof">Anti-Backlash Proof</th>
+              <th>H-7 Notif</th>
+              <th>H-3 Notif</th>
+              <th>H-1 Notif</th>
+              <th>Multi-Channel Status</th>
+              <th data-i18n="thAction">Send Action</th>
             </tr>
           </thead>
-          <tbody id="pushAuditRows"></tbody>
+          <tbody id="reminderTableRows"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- SCREEN 4: PARTNER SCORING -->
+    <!-- SCREEN 4: PARTNER PERFORMANCE INFOGRAPHIC -->
     <section id="scores" class="screen">
-      <div class="card">
-        <div style="font-weight:800; font-size:18px; margin-bottom:16px" data-i18n="scoringTitle">Partner Performance Scoring</div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th data-i18n="thPartner">Partner</th>
-              <th data-i18n="thScore">Score</th>
-              <th data-i18n="thCategory">Reliability Rating</th>
-              <th data-i18n="thTrend">History Trend</th>
-            </tr>
-          </thead>
-          <tbody id="partnerScoreRows"></tbody>
-        </table>
+      <div class="grid" style="grid-template-columns: 1.2fr 0.8fr">
+        <!-- SCORE LIST -->
+        <div class="card">
+          <div style="font-weight:800; font-size:16px; margin-bottom:16px" data-i18n="partnerPerfTitle">★ Partner Reliability Performance</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th data-i18n="thPartner">Partner</th>
+                <th data-i18n="thScore">Score</th>
+                <th data-i18n="thCategory">Rating Category</th>
+                <th>History Trend</th>
+              </tr>
+            </thead>
+            <tbody id="partnerScoreRows"></tbody>
+          </table>
+        </div>
+
+        <!-- INFOGRAPHIC WEIGHT MODEL -->
+        <div class="card">
+          <div style="font-weight:800; font-size:16px; margin-bottom:6px" data-i18n="modelTitle">📊 Scoring Infographic Model</div>
+          <div style="color:var(--text-muted); font-size:12px; margin-bottom:16px" data-i18n="modelSub">Automated weighted evaluation criteria</div>
+
+          <div class="barrow">
+            <span data-i18n="m1">Payment Timeliness</span>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%"></div></div>
+            <b>40%</b>
+          </div>
+          <div class="barrow">
+            <span data-i18n="m2">Reminder Response</span>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:50%"></div></div>
+            <b>20%</b>
+          </div>
+          <div class="barrow">
+            <span data-i18n="m3">Admin Compliance</span>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:38%"></div></div>
+            <b>15%</b>
+          </div>
+          <div class="barrow">
+            <span data-i18n="m4">Overdue Frequency</span>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:38%"></div></div>
+            <b>15%</b>
+          </div>
+          <div class="barrow">
+            <span data-i18n="m5">Consistency</span>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%"></div></div>
+            <b>10%</b>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--card-border); padding:12px; border-radius:10px; font-size:11.5px; color:var(--text-muted); margin-top:20px">
+            <b>Rating Scale:</b><br>
+            90–100 Excellent • 80–89 Good • 70–79 Monitor • &lt;70 Attention Needed
+          </div>
+        </div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- MODAL: XENDIT PAYMENT GATEWAY SIMULATOR -->
+<!-- MODAL 1: CREATE NEW INVOICE FORM -->
+<div id="newInvoiceModal" class="modal">
+  <div class="modal-box">
+    <h3 style="margin-top:0" data-i18n="createModalTitle">Create New Invoice Tag</h3>
+    <form onsubmit="handleCreateInvoice(event)">
+      <div class="form-group">
+        <label data-i18n="lblAutoTag">Generated Invoice Tag (Auto Query)</label>
+        <input type="text" id="newInvId" class="form-input" readonly style="font-weight:700; color:var(--blue)">
+      </div>
+      <div class="form-group">
+        <label data-i18n="lblPartnerName">Partner / Company Name</label>
+        <input type="text" id="newInvPartner" class="form-input" placeholder="e.g. PT Gelora Nusantara" required>
+      </div>
+      <div class="form-group">
+        <label data-i18n="lblAmount">Invoice Amount (IDR)</label>
+        <input type="number" id="newInvAmount" class="form-input" placeholder="e.g. 25000000" required>
+      </div>
+      <div class="form-group">
+        <label data-i18n="lblDueDate">Due Date</label>
+        <input type="date" id="newInvDue" class="form-input" required>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:22px">
+        <button type="submit" class="btn" style="flex:1; justify-content:center" data-i18n="btnSubmitInv">Save & Issue Invoice Tag</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('newInvoiceModal')" data-i18n="btnCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 2: XENDIT PAYMENT GATEWAY SIMULATOR -->
 <div id="xenditModal" class="modal">
   <div class="modal-box" style="border-top: 4px solid var(--xendit)">
     <div style="display:flex; justify-content:space-between; align-items:center">
       <h3 style="margin:0; color:var(--xendit)">Xendit Payment Gateway</h3>
       <span class="pill paid">VERIFIED SECURE</span>
     </div>
-    <p style="color:var(--muted); font-size:13px; margin-top:6px" id="xenditInvTag">Invoice: INV-000</p>
-    <div style="background:#0f172a; padding:16px; border-radius:12px; margin:16px 0; border:1px solid var(--card-border)">
-      <div style="font-size:12px; color:var(--muted)" data-i18n="lblAmountDue">Total Payable Amount</div>
-      <div style="font-size:24px; font-weight:900; color:#fff" id="xenditAmount">Rp 0</div>
+    <p style="color:var(--text-muted); font-size:12.5px; margin:4px 0 16px" id="xenditInvTag">Invoice: INV-000</p>
+
+    <div style="background:var(--xendit-subtle); padding:16px; border-radius:12px; margin-bottom:16px; border:1px solid var(--card-border)">
+      <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase" data-i18n="lblPayable">Total Payable Amount</div>
+      <div style="font-size:24px; font-weight:900; color:var(--text); margin-top:2px" id="xenditAmount">Rp 0</div>
     </div>
+
     <div class="form-group">
-      <label data-i18n="lblPayMethod">Select Payment Method</label>
+      <label data-i18n="lblPayMethod">Select Payment Channel</label>
       <select class="form-input" id="payMethod">
-        <option>Xendit Virtual Account (BCA/Mandiri/BNI)</option>
-        <option>QRIS Instant Pay</option>
+        <option>Xendit Virtual Account (BCA / Mandiri / BNI)</option>
+        <option>QRIS Instant Settlement</option>
         <option>Credit / Debit Card</option>
       </select>
     </div>
+
     <div style="display:flex; gap:10px; margin-top:20px">
-      <button class="btn btn-xendit" style="flex:1; justify-content:center" onclick="processXenditPay()" data-i18n="btnConfirmPay">⚡ Pay Now Instant</button>
+      <button class="btn btn-xendit" style="flex:1; justify-content:center" onclick="processXenditPay()" data-i18n="btnPayNow">⚡ Pay via Xendit Instant</button>
       <button class="btn btn-secondary" onclick="closeModal('xenditModal')" data-i18n="btnCancel">Cancel</button>
     </div>
-  </div>
-</div>
-
-<!-- MODAL: PROOF AUDIT CERTIFICATE -->
-<div id="proofModal" class="modal">
-  <div class="modal-box">
-    <h3 style="margin-top:0" data-i18n="proofTitle">📜 Dispatch Certificate of Delivery</h3>
-    <div id="proofContent" style="background:#0f172a; padding:16px; border-radius:10px; font-family:monospace; font-size:12px; color:var(--green); margin:16px 0; border:1px solid var(--card-border)"></div>
-    <button class="btn btn-secondary" style="width:100%; justify-content:center" onclick="closeModal('proofModal')" data-i18n="btnClose">Close Audit Proof</button>
   </div>
 </div>
 
 <div id="toastContainer" class="toast-container"></div>
 
 <script>
-// --- GLOBAL STATE & I18N DATA ---
+// STATE MANAGEMENT
 let currentUser = "Fitri NH";
 let currentLang = "en";
-let activeScreen = "dashboard";
-let selectedInvForPay = null;
+let currentTheme = "light";
+let selectedInvoiceId = "INV-001";
 
 const i18n = {
   en: {
-    navDash: "Dashboard", navInvoices: "Invoices & Query", navReminders: "Push Notif Hub", navScores: "Partner Scoring",
+    brandSub: "Enterprise Management", navDash: "Dashboard", navInvoices: "Invoice Tracker", navReminders: "Reminder Status Log", navScores: "Partner Performance",
     mTotal: "TOTAL INVOICES", mOnTrack: "● ON TRACK", mDueSoon: "● DUE SOON", mOverdue: "● OVERDUE", mPaid: "● PAID", mClickView: "Click to filter",
-    urgentAction: "⚠️ Immediate Action Required", pushFeed: "⚡ Live Push Notification Hub",
-    btnNewInv: "Create Invoice", partnerDebtSummary: "Partner Outstanding Debt Breakdown", billHistory: "Historical Billing & Ledger",
-    thInv: "Invoice", thPartner: "Partner Company", thAmount: "Amount", thStatus: "Status", thAction: "Action", thTag: "Tag #", thDueDate: "Due Date", thGateway: "Xendit Gateway",
-    thTimestamp: "Dispatch Timestamp", thChannel: "Channel", thDeliveryStatus: "Delivery Receipt", thProof: "Anti-Backlash Proof",
-    thScore: "Score", thCategory: "Reliability Rating", thTrend: "History Trend",
-    auditTitle: "Push Notification Delivery Audit Log", auditSub: "Legal proof of automated dispatches via Email, SMS, and WhatsApp",
-    btnSimulatePush: "🚀 Dispatch Mass Reminders", scoringTitle: "Partner Performance Scoring",
-    lblAmountDue: "Total Payable Amount", lblPayMethod: "Select Payment Method", btnConfirmPay: "⚡ Pay Now Instant", btnCancel: "Cancel", btnClose: "Close Audit Proof",
-    proofTitle: "📜 Dispatch Certificate of Delivery",
-    gGreetingMorning: "Good Morning", gGreetingAfternoon: "Good Afternoon", gGreetingEvening: "Good Evening", gGreetingNight: "Good Night"
+    attnTitle: "⚠️ Immediate Attention Needed", topPartners: "🏆 Top Reliable Partners",
+    btnNewInv: "Create Invoice", breakdownTitle: "Company Total Outstanding Debt", bkLedger: "Billing History Breakdown",
+    thInv: "Tag #", thPartner: "Partner Company", thAmount: "Amount", thStatus: "Status", thAction: "Action", thDueDate: "Due Date", thGateway: "Xendit Gateway",
+    invDetailTitle: "Invoice Detailed Inspection", lblAmount: "INVOICE AMOUNT", lblInvDate: "INVOICE DATE", lblDueDate: "DUE DATE",
+    lifecycleTitle: "🔔 Auto Push Reminder Lifecycle (H-7, H-3, H-1)", paymentSec: "💰 Payment Gateway & Settlement", paymentSub: "Simulate Xendit collection flow or payment verification.",
+    btnBack: "Back to Tracker", reminderHubTitle: "🔔 Reminder Status Log & Push Notification Hub", reminderHubSub: "Live delivery logs for Email, SMS & WhatsApp with anti-backlash proof",
+    btnSimulateMass: "🚀 Trigger Auto Push to All", partnerPerfTitle: "★ Partner Reliability Performance", thScore: "Score", thCategory: "Rating Category",
+    modelTitle: "📊 Scoring Infographic Model", modelSub: "Automated weighted evaluation criteria",
+    m1: "Payment Timeliness", m2: "Reminder Response", m3: "Admin Compliance", m4: "Overdue Frequency", m5: "Consistency",
+    createModalTitle: "Create New Invoice Tag", lblAutoTag: "Generated Invoice Tag (Auto Query)", lblPartnerName: "Partner / Company Name", btnSubmitInv: "Save & Issue Invoice Tag",
+    btnCancel: "Cancel", lblPayable: "Total Payable Amount", lblPayMethod: "Select Payment Channel", btnPayNow: "⚡ Pay via Xendit Instant",
+    gMorning: "Good Morning", gAfternoon: "Good Afternoon", gEvening: "Good Evening", gNight: "Good Night"
   },
   id: {
-    navDash: "Dashboard", navInvoices: "Invoice & Pencarian", navReminders: "Hub Notifikasi Push", navScores: "Skor Performa",
+    brandSub: "Manajemen Enterprise", navDash: "Dashboard", navInvoices: "Pelacak Invoice", navReminders: "Log Status Pengingat", navScores: "Performa Mitra",
     mTotal: "TOTAL INVOICE", mOnTrack: "● LANCAR", mDueSoon: "● HAMPIR TEMPO", mOverdue: "● TERLAMBAT", mPaid: "● LUNAS", mClickView: "Klik untuk filter",
-    urgentAction: "⚠️ Tindakan Mendesak Diperlukan", pushFeed: "⚡ Feed Live Notifikasi Push",
-    btnNewInv: "Buat Invoice Baru", partnerDebtSummary: "Rincian Total Tunggakan Mitra", billHistory: "Riwayat Tagihan & Histori Pembayaran",
-    thInv: "Invoice", thPartner: "Perusahaan Mitra", thAmount: "Jumlah", thStatus: "Status", thAction: "Aksi", thTag: "Tag #", thDueDate: "Jatuh Tempo", thGateway: "Pembayaran Xendit",
-    thTimestamp: "Waktu Pengiriman", thChannel: "Saluran Notif", thDeliveryStatus: "Status Penerimaan", thProof: "Bukti Legal Anti-Klaim",
-    thScore: "Skor", thCategory: "Tingkat Keandalan", thTrend: "Tren Riwayat",
-    auditTitle: "Log Audit Pengiriman Notifikasi Push", auditSub: "Bukti legal pengiriman otomatis via Email, SMS, dan WhatsApp",
-    btnSimulatePush: "🚀 Kirim Notifikasi Massal", scoringTitle: "Penilaian Performa Mitra",
-    lblAmountDue: "Total Tagihan Yang Harus Dibayar", lblPayMethod: "Pilih Metode Pembayaran", btnConfirmPay: "⚡ Bayar Sekarang", btnCancel: "Batal", btnClose: "Tutup Bukti Audit",
-    proofTitle: "📜 Sertifikat Legal Pengiriman Notifikasi",
-    gGreetingMorning: "Selamat Pagi", gGreetingAfternoon: "Selamat Siang", gGreetingEvening: "Selamat Sore", gGreetingNight: "Selamat Malam"
+    attnTitle: "⚠️ Perhatian Mendesak Diperlukan", topPartners: "🏆 Mitra Paling Andal",
+    btnNewInv: "Buat Invoice Baru", breakdownTitle: "Total Tunggakan Tagihan Mitra", bkLedger: "Rincian Histori Tagihan",
+    thInv: "Tag #", thPartner: "Perusahaan Mitra", thAmount: "Nominal", thStatus: "Status", thAction: "Aksi", thDueDate: "Jatuh Tempo", thGateway: "Pembayaran Xendit",
+    invDetailTitle: "Inspeksi Detail Invoice", lblAmount: "NOMINAL INVOICE", lblInvDate: "TANGGAL INVOICE", lblDueDate: "JATUH TEMPO",
+    lifecycleTitle: "🔔 Siklus Pengingat Notifikasi Push (H-7, H-3, H-1)", paymentSec: "💰 Gerbang Pembayaran & Pelunasan", paymentSub: "Simulasi alur penagihan Xendit atau verifikasi pembayaran.",
+    btnBack: "Kembali ke Pelacak", reminderHubTitle: "🔔 Log Status Pengingat & Hub Notifikasi Push", reminderHubSub: "Log pengiriman langsung via Email, SMS & WhatsApp beserta bukti pengiriman",
+    btnSimulateMass: "🚀 Kirim Notifikasi Otomatis Ke Semua", partnerPerfTitle: "★ Penilaian Performa Keandalan Mitra", thScore: "Skor", thCategory: "Kategori Performa",
+    modelTitle: "📊 Model Infografis Penilaian", modelSub: "Kriteria penilaian terbobot otomatis",
+    m1: "Ketepatan Waktu Bayar", m2: "Respons Pengingat", m3: "Kepatuhan Administrasi", m4: "Frekuensi Terlambat", m5: "Konsistensi",
+    createModalTitle: "Buat Tag Invoice Baru", lblAutoTag: "Tag Invoice Otomatis (Query Tag)", lblPartnerName: "Nama Perusahaan Mitra", btnSubmitInv: "Simpan & Terbitkan Tag",
+    btnCancel: "Batal", lblPayable: "Total Jumlah Yang Harus Dibayar", lblPayMethod: "Pilih Saluran Pembayaran", btnPayNow: "⚡ Bayar via Xendit Otomatis",
+    gMorning: "Selamat Pagi", gAfternoon: "Selamat Siang", gEvening: "Selamat Sore", gNight: "Selamat Malam"
   }
 };
 
-// Database Mock
 let invoices = [
-  { id: "INV-001", p: "PT Alpha Media", due: "2026-09-18", amount: 25000000, status: "Due Soon" },
-  { id: "INV-002", p: "PT Beta Teknologi", due: "2026-09-10", amount: 18000000, status: "Overdue" },
-  { id: "INV-003", p: "PT Gamma Konstruksi", due: "2026-09-01", amount: 45000000, status: "Paid" },
-  { id: "INV-004", p: "PT Delta Indonesia", due: "2026-09-30", amount: 12000000, status: "On Track" },
-  { id: "INV-005", p: "PT Alpha Media", due: "2026-09-12", amount: 30000000, status: "Overdue" }
-];
-
-let pushLogs = [
-  { time: "2026-09-15 08:30:12", inv: "INV-002", p: "PT Beta Teknologi", ch: "Email", status: "Delivered (100%)", proofId: "PROOF-EML-99281" },
-  { time: "2026-09-15 08:30:14", inv: "INV-002", p: "PT Beta Teknologi", ch: "WhatsApp", status: "Read (Blue Check)", proofId: "PROOF-WA-48192" },
-  { time: "2026-09-15 09:00:05", inv: "INV-001", p: "PT Alpha Media", ch: "SMS", status: "Delivered", proofId: "PROOF-SMS-10293" }
+  { id: 'INV-001', p: 'PT Alpha Media', due: '2026-09-18', date: '2026-08-15', amount: 25000000, status: 'Due Soon' },
+  { id: 'INV-002', p: 'PT Beta Teknologi', due: '2026-09-10', date: '2026-08-10', amount: 18000000, status: 'Overdue' },
+  { id: 'INV-003', p: 'PT Gamma Rekatama', due: '2026-09-20', date: '2026-08-20', amount: 30000000, status: 'Paid' },
+  { id: 'INV-004', p: 'PT Delta Indonesia', due: '2026-09-30', date: '2026-08-30', amount: 15000000, status: 'On Track' },
+  { id: 'INV-005', p: 'PT Alpha Media', due: '2026-09-12', date: '2026-08-12', amount: 22000000, status: 'Overdue' }
 ];
 
 let partners = [
-  { name: "PT Alpha Media", score: 82, trend: "↑ Improving" },
-  { name: "PT Beta Teknologi", score: 64, trend: "↓ Declining" },
-  { name: "PT Gamma Konstruksi", score: 98, trend: "↑ Excellent" },
-  { name: "PT Delta Indonesia", score: 90, trend: "→ Stable" }
+  { name: 'PT Alpha Media', score: 95, parts: [40, 19, 15, 11, 10], trend: '↑ Improving' },
+  { name: 'PT Beta Teknologi', score: 68, parts: [29, 13, 12, 6, 8], trend: '↓ Declining' },
+  { name: 'PT Gamma Rekatama', score: 88, parts: [37, 17, 14, 10, 10], trend: '↑ Improving' },
+  { name: 'PT Delta Indonesia', score: 76, parts: [34, 16, 13, 8, 5], trend: '→ Stable' }
 ];
 
-// --- AUTH & LANGUAGE CONTROLLERS ---
+let pushLogs = [
+  { inv: 'INV-001', p: 'PT Alpha Media', h7: true, h3: true, h1: false, email: true, sms: true, wa: true, response: 'Responded' },
+  { inv: 'INV-002', p: 'PT Beta Teknologi', h7: true, h3: true, h1: true, email: true, sms: false, wa: true, response: 'No Response' },
+  { inv: 'INV-003', p: 'PT Gamma Rekatama', h7: true, h3: false, h1: false, email: true, sms: true, wa: true, response: 'Responded' },
+  { inv: 'INV-004', p: 'PT Delta Indonesia', h7: false, h3: false, h1: false, email: false, sms: false, wa: false, response: 'Scheduled' }
+];
+
+// THEME TOGGLE
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  document.getElementById('themeIcon').textContent = currentTheme === 'light' ? '🌙' : '☀️';
+  document.getElementById('themeLabel').textContent = currentTheme === 'light' ? 'Dark' : 'Light';
+}
+
+// LANGUAGE SWITCHER
 function setLanguage(lang) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   if (lang === 'en') {
-    document.getElementById('btnLangEn').classList.add('active');
+    document.getElementById('btnLangEn')?.classList.add('active');
   } else {
-    document.getElementById('btnLangId').classList.add('active');
+    document.getElementById('btnLangId')?.classList.add('active');
   }
-  
-  // Translate UI Data Attributes
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (i18n[lang][key]) el.textContent = i18n[lang][key];
   });
-  
   updateClock();
   renderAll();
 }
 
+// AUTH HANDLER
 function handleAuth(e) {
   e.preventDefault();
   const nameInput = document.getElementById('authName').value.trim();
@@ -415,17 +617,16 @@ function handleAuth(e) {
   renderAll();
 }
 
-// --- DYNAMIC CLOCK & GREETING ---
+// REALTIME CLOCK & GREETING
 function updateClock() {
   const now = new Date();
   const hours = now.getHours();
-  let gKey = "gGreetingNight";
-  if (hours >= 5 && hours < 12) gKey = "gGreetingMorning";
-  else if (hours >= 12 && hours < 15) gKey = "gGreetingAfternoon";
-  else if (hours >= 15 && hours < 18) gKey = "gGreetingEvening";
+  let gKey = "gNight";
+  if (hours >= 5 && hours < 12) gKey = "gMorning";
+  else if (hours >= 12 && hours < 15) gKey = "gAfternoon";
+  else if (hours >= 15 && hours < 18) gKey = "gEvening";
 
-  const greetingStr = i18n[currentLang][gKey];
-  document.getElementById('dynGreeting').textContent = `${greetingStr}, ${currentUser} 👋`;
+  document.getElementById('dynGreeting').textContent = `${i18n[currentLang][gKey]}, ${currentUser} 👋`;
   
   const timeStr = now.toLocaleTimeString(currentLang === 'en' ? 'en-US' : 'id-ID', { hour12: false });
   const dateStr = now.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -433,32 +634,35 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// --- NAVIGATION & SCREEN ROUTING ---
-function go(screenId) {
-  activeScreen = screenId;
+// SCREEN ROUTING
+function go(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav button').forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-nav') === screenId);
+    b.classList.toggle('active', b.getAttribute('data-nav') === id || (id === 'invoiceDetail' && b.getAttribute('data-nav') === 'invoices'));
   });
 }
 
-function filterAndGo(filter) {
+function filterFromDash(status) {
   go('invoices');
-  document.getElementById('searchInput').value = filter === 'All' ? '' : filter;
-  handleSearch();
+  document.getElementById('searchInput').value = status === 'All' ? '' : status;
+  renderInvoices();
 }
 
-// --- CORE RENDER FUNCTIONS ---
-function fmtMoney(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
+// HELPERS
+function fmt(n) { return 'Rp' + n.toLocaleString('id-ID'); }
+function pill(s) {
+  let c = s === 'Paid' ? 'paid' : s === 'Overdue' ? 'over' : s === 'Due Soon' ? 'due' : 'on';
+  return `<span class="pill ${c}">${s.toUpperCase()}</span>`;
+}
 
+// RENDER ALL DATA
 function renderAll() {
   renderMetrics();
   renderDashboardUrgent();
-  renderPushFeed();
-  renderInvoicesTable(invoices);
-  renderPushAudit();
-  renderPartnerScores();
+  renderInvoices();
+  renderReminders();
+  renderScores();
 }
 
 function renderMetrics() {
@@ -475,200 +679,219 @@ function renderDashboardUrgent() {
     <tr>
       <td><b>${x.id}</b></td>
       <td>${x.p}</td>
-      <td style="font-weight:700">${fmtMoney(x.amount)}</td>
-      <td><span class="pill ${x.status === 'Overdue' ? 'over' : 'due'}">${x.status}</span></td>
+      <td style="font-weight:700">${fmt(x.amount)}</td>
+      <td>${pill(x.status)}</td>
       <td><button class="btn btn-xendit" onclick="openXenditModal('${x.id}')">Pay via Xendit</button></td>
     </tr>
   `).join('');
-}
 
-function renderPushFeed() {
-  document.getElementById('livePushFeed').innerHTML = pushLogs.slice(0, 3).map(l => `
-    <div style="background:#0f172a; padding:10px 14px; border-radius:10px; border:1px solid var(--card-border); font-size:12px">
-      <div style="display:flex; justify-content:space-between; margin-bottom:4px">
-        <b>${l.p} (${l.inv})</b>
-        <span class="ch-badge ch-${l.ch.toLowerCase()}">${l.ch}</span>
-      </div>
-      <div style="color:var(--muted)">${l.status} · <small>${l.time.split(' ')[1]}</small></div>
+  document.getElementById('dashTopPartners').innerHTML = partners.sort((a,b)=>b.score-a.score).slice(0,3).map((p,i) => `
+    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+      <div><b>${i===0?'🥇':i===1?'🥈':'🥉'} ${p.name}</b><div style="font-size:11px; color:var(--text-muted)">${p.trend}</div></div>
+      <strong style="font-size:18px; color:var(--blue)">${p.score}</strong>
     </div>
   `).join('');
 }
 
-function renderInvoicesTable(dataset) {
-  document.getElementById('invoiceTableRows').innerHTML = dataset.map(x => {
-    let pClass = x.status === 'Paid' ? 'paid' : x.status === 'Overdue' ? 'over' : x.status === 'Due Soon' ? 'due' : 'on';
-    return `
-      <tr>
-        <td><b>${x.id}</b></td>
-        <td>${x.p}</td>
-        <td>${x.due}</td>
-        <td style="font-weight:700">${fmtMoney(x.amount)}</td>
-        <td><span class="pill ${pClass}">${x.status}</span></td>
-        <td>
-          ${x.status === 'Paid' 
-            ? `<span style="color:var(--green); font-weight:700; font-size:12px">✓ Settled</span>` 
-            : `<button class="btn btn-xendit" onclick="openXenditModal('${x.id}')">Pay via Xendit</button>`
-          }
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
+function renderInvoices() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+  const searchBreakdownBox = document.getElementById('searchBreakdown');
 
-// --- SEARCH & AUTOMATED QUERY BREAKDOWN ---
-function handleSearch() {
-  const query = document.getElementById('searchInput').value.trim().toLowerCase();
-  const breakdownBox = document.getElementById('searchBreakdown');
+  const filtered = invoices.filter(x => x.id.toLowerCase().includes(q) || x.p.toLowerCase().includes(q) || x.status.toLowerCase().includes(q));
+  
+  document.getElementById('invoiceRows').innerHTML = filtered.map(x => `
+    <tr class="clickable" onclick="openInvoiceDetail('${x.id}')">
+      <td><b>${x.id}</b></td>
+      <td>${x.p}</td>
+      <td>${x.due}</td>
+      <td style="font-weight:700">${fmt(x.amount)}</td>
+      <td>${pill(x.status)}</td>
+      <td>
+        ${x.status === 'Paid' 
+          ? `<span style="color:var(--green); font-size:12px; font-weight:700">✓ Settled</span>` 
+          : `<button class="btn btn-xendit" onclick="event.stopPropagation(); openXenditModal('${x.id}')">Pay via Xendit</button>`
+        }
+      </td>
+      <td><button class="btn btn-ghost" onclick="event.stopPropagation(); openInvoiceDetail('${x.id}')">Detail →</button></td>
+    </tr>
+  `).join('');
 
-  if (!query) {
-    breakdownBox.style.display = 'none';
-    renderInvoicesTable(invoices);
-    return;
-  }
-
-  const filtered = invoices.filter(x => x.id.toLowerCase().includes(query) || x.p.toLowerCase().includes(query) || x.status.toLowerCase().includes(query));
-  renderInvoicesTable(filtered);
-
-  // If searching a specific PT or tag, calculate debt breakdown
-  if (query.length >= 2) {
-    const matchedPartner = invoices.filter(x => x.p.toLowerCase().includes(query));
+  // DEBT BREAKDOWN QUERY LOGIC
+  if (q.length >= 2) {
+    const matchedPartner = invoices.filter(x => x.p.toLowerCase().includes(q));
     if (matchedPartner.length > 0) {
-      breakdownBox.style.display = 'grid';
+      searchBreakdownBox.style.display = 'block';
       const unpaid = matchedPartner.filter(x => x.status !== 'Paid');
       const totalDebt = unpaid.reduce((sum, item) => sum + item.amount, 0);
 
-      document.getElementById('breakdownTotal').textContent = fmtMoney(totalDebt);
-      document.getElementById('breakdownMeta').textContent = `${unpaid.length} ${currentLang === 'en' ? 'Unpaid / Active Bills' : 'Tagihan Belum Lunas'}`;
-      
-      document.getElementById('breakdownHistoryList').innerHTML = matchedPartner.map(h => `
+      document.getElementById('bkTotalDebt').textContent = fmt(totalDebt);
+      document.getElementById('bkUnpaidCount').textContent = `${unpaid.length} Active Unpaid Invoices`;
+      document.getElementById('bkHistoryRows').innerHTML = matchedPartner.map(h => `
         <div style="display:flex; justify-content:space-between; font-size:12px">
           <span>${h.id} (${h.due})</span>
-          <b>${fmtMoney(h.amount)} - <small style="color:${h.status==='Paid'?'var(--green)':'var(--red)'}">${h.status}</small></b>
+          <b>${fmt(h.amount)} - <small style="color:${h.status==='Paid'?'var(--green)':'var(--red)'}">${h.status}</small></b>
         </div>
       `).join('');
     } else {
-      breakdownBox.style.display = 'none';
+      searchBreakdownBox.style.display = 'none';
     }
+  } else {
+    searchBreakdownBox.style.display = 'none';
   }
 }
 
-// --- AUTO NUMBERING INVOICE CREATION ---
+// INVOICE DETAIL VIEW
+function openInvoiceDetail(id) {
+  selectedInvoiceId = id;
+  const x = invoices.find(a => a.id === id);
+  if (!x) return;
+  go('invoiceDetail');
+
+  document.getElementById('dInvoice').textContent = x.id;
+  document.getElementById('dPartner').textContent = x.p;
+  document.getElementById('dAmount').textContent = fmt(x.amount);
+  document.getElementById('dDate').textContent = x.date;
+  document.getElementById('dDue').textContent = x.due;
+  document.getElementById('dStatusBadge').innerHTML = pill(x.status);
+
+  const done = x.status === 'Paid';
+  document.getElementById('dPaymentText').textContent = done ? 'PAID — Pembayaran Diterima via Xendit' : 'Belum Dibayar';
+  document.getElementById('dPaymentAction').innerHTML = done 
+    ? `<span style="color:var(--green); font-weight:800; font-size:13px">✓ Settled</span>` 
+    : `<button class="btn btn-xendit" onclick="openXenditModal('${x.id}')">Pay via Xendit</button>`;
+
+  // Auto Reminder Lifecycle
+  const timelineEvents = [
+    { label: 'H-7 Push', title: done ? '⏹️ Reminder Lifecycle H-7' : '📤 Auto Push Reminder (H-7)', meta: 'Email, SMS & WhatsApp Sent • 09:00 AM' },
+    { label: 'H-3 Push', title: done ? '⏹️ Reminder Lifecycle H-3' : '📤 Auto Push Reminder (H-3)', meta: 'Email, SMS & WhatsApp Sent • 09:00 AM' },
+    { label: 'H-1 Push', title: done ? '⏹️ Stopped — Invoice PAID' : '⏳ Scheduled Auto Push (H-1)', meta: `Scheduled before due date ${x.due}` }
+  ];
+
+  document.getElementById('dTimeline').innerHTML = timelineEvents.map(ev => `
+    <div class="event">
+      <b>${ev.label}</b>
+      <div>
+        <b>${ev.title}</b><br>
+        <small>${ev.meta}</small>
+      </div>
+    </div>
+  `).join('');
+}
+
+// CREATE INVOICE MODAL
 function openNewInvoiceModal() {
   const nextNum = invoices.length + 1;
   const autoTag = `INV-${String(nextNum).padStart(3, '0')}`;
-  const partnerName = prompt(currentLang === 'en' ? 'Enter Partner Company Name:' : 'Masukkan Nama Perusahaan Mitra:');
-  const amountStr = prompt(currentLang === 'en' ? 'Enter Invoice Amount (IDR):' : 'Masukkan Nominal Invoice (IDR):');
-  
-  if (partnerName && amountStr) {
-    const newInv = {
-      id: autoTag,
-      p: partnerName,
-      due: "2026-10-01",
-      amount: parseInt(amountStr) || 10000000,
-      status: "On Track"
-    };
-    invoices.unshift(newInv);
-    renderAll();
-    showToast(`✅ Auto-generated Tag ${autoTag} for ${partnerName}`);
-  }
+  document.getElementById('newInvId').value = autoTag;
+  document.getElementById('newInvoiceModal').style.display = 'flex';
 }
 
-// --- XENDIT PAYMENT GATEWAY SIMULATION ---
-function openXenditModal(invId) {
-  selectedInvForPay = invId;
-  const inv = invoices.find(x => x.id === invId);
-  document.getElementById('xenditInvTag').textContent = `Tag: ${inv.id} · ${inv.p}`;
-  document.getElementById('xenditAmount').textContent = fmtMoney(inv.amount);
+function handleCreateInvoice(e) {
+  e.preventDefault();
+  const id = document.getElementById('newInvId').value;
+  const p = document.getElementById('newInvPartner').value.trim();
+  const amount = parseInt(document.getElementById('newInvAmount').value);
+  const due = document.getElementById('newInvDue').value;
+
+  invoices.unshift({ id, p, due, date: new Date().toISOString().split('T')[0], amount, status: 'On Track' });
+  pushLogs.unshift({ inv: id, p, h7: false, h3: false, h1: false, email: false, sms: false, wa: false, response: 'Scheduled' });
+
+  closeModal('newInvoiceModal');
+  renderAll();
+  showToast(`✅ Auto-generated ${id} created for ${p}`);
+}
+
+// XENDIT PAYMENT GATEWAY FLOW
+function openXenditModal(id) {
+  selectedInvoiceId = id;
+  const x = invoices.find(a => a.id === id);
+  if (!x) return;
+  document.getElementById('xenditInvTag').textContent = `Tag: ${x.id} • ${x.p}`;
+  document.getElementById('xenditAmount').textContent = fmt(x.amount);
   document.getElementById('xenditModal').style.display = 'flex';
 }
 
 function processXenditPay() {
-  if (!selectedInvForPay) return;
-  const inv = invoices.find(x => x.id === selectedInvForPay);
-  inv.status = 'Paid';
-  
-  // Dynamic Push Notif Log entry
-  const now = new Date();
-  const timestamp = now.toISOString().replace('T', ' ').substring(0, 19);
-  pushLogs.unshift({
-    time: timestamp,
-    inv: inv.id,
-    p: inv.p,
-    ch: "WhatsApp",
-    status: "Paid Notification Delivered",
-    proofId: `PROOF-XEN-${Math.floor(Math.random()*90000 + 10000)}`
-  });
-
-  closeModal('xenditModal');
-  renderAll();
-  showToast(`💳 Xendit Payment Success! ${inv.id} marked as PAID.`);
+  const x = invoices.find(a => a.id === selectedInvoiceId);
+  if (x) {
+    x.status = 'Paid';
+    // Update Partner score positively
+    const partner = partners.find(p => p.name === x.p);
+    if (partner && partner.score < 98) partner.score += 2;
+    
+    closeModal('xenditModal');
+    renderAll();
+    showToast(`💳 Xendit Payment Success! ${x.id} is marked as PAID.`);
+    if (document.getElementById('invoiceDetail').classList.contains('active')) {
+      openInvoiceDetail(x.id);
+    }
+  }
 }
 
-// --- PUSH AUDIT & ANTI-BACKLASH PROOF ---
-function renderPushAudit() {
-  document.getElementById('pushAuditRows').innerHTML = pushLogs.map(l => `
+// REMINDER LOG HUB
+function renderReminders() {
+  document.getElementById('reminderTableRows').innerHTML = pushLogs.map(l => `
     <tr>
-      <td><small style="font-family:monospace">${l.time}</small></td>
       <td><b>${l.inv}</b></td>
       <td>${l.p}</td>
-      <td><span class="ch-badge ch-${l.ch.toLowerCase()}">${l.ch}</span></td>
-      <td><span style="color:var(--green); font-size:12px; font-weight:700">✓ ${l.status}</span></td>
-      <td><button class="btn btn-secondary" style="padding:4px 8px; font-size:11px" onclick="viewProof('${l.proofId}', '${l.inv}', '${l.p}', '${l.time}', '${l.ch}')">📜 Audit Receipt</button></td>
+      <td>${l.h7 ? '✓ Sent' : '—'}</td>
+      <td>${l.h3 ? '✓ Sent' : '—'}</td>
+      <td>${l.h1 ? '✓ Sent' : '—'}</td>
+      <td>
+        <span class="ch-badge ch-email">Email</span>
+        <span class="ch-badge ch-sms">SMS</span>
+        <span class="ch-badge ch-wa">WhatsApp</span>
+      </td>
+      <td>
+        <button class="btn btn-secondary" style="padding:5px 9px; font-size:11px" onclick="sendAutoPush('${l.inv}')">🚀 Send Push Now</button>
+      </td>
     </tr>
   `).join('');
+}
+
+function sendAutoPush(invId) {
+  const log = pushLogs.find(x => x.inv === invId);
+  if (log) {
+    log.h7 = true; log.h3 = true; log.h1 = true;
+    log.email = true; log.sms = true; log.wa = true;
+    renderReminders();
+    showToast(`📲 Auto Push sent to ${log.p} via Email, SMS & WhatsApp!`);
+  }
 }
 
 function triggerMassPush() {
-  const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
-  pushLogs.unshift(
-    { time: now, inv: "INV-001", p: "PT Alpha Media", ch: "Email", status: "Auto-Sent (H-3)", proofId: `PROOF-EML-${Math.floor(Math.random()*90000)}` },
-    { time: now, inv: "INV-002", p: "PT Beta Teknologi", ch: "SMS", status: "Auto-Sent (Overdue)", proofId: `PROOF-SMS-${Math.floor(Math.random()*90000)}` }
-  );
-  renderAll();
-  showToast(`🚀 Mass push notifications dispatched via Email, SMS & WhatsApp.`);
+  pushLogs.forEach(l => {
+    l.h7 = true; l.h3 = true; l.h1 = true;
+    l.email = true; l.sms = true; l.wa = true;
+  });
+  renderReminders();
+  showToast(`🚀 Mass push dispatch completed across all active partners!`);
 }
 
-function viewProof(proofId, invTag, partner, time, ch) {
-  const content = `
-[DISPATCH AUDIT CERTIFICATE]
-=======================================
-PROOFCERT ID : ${proofId}
-TIMESTAMP    : ${time} UTC+7
-CHANNEL      : ${ch.toUpperCase()} DISPATCH PROTOCOL
-TARGET TAG   : ${invTag}
-PARTNER      : ${partner}
-SENDER PIC   : ${currentUser} (Admin Session)
-STATUS       : ACKNOWLEDGED BY CARRIER GATEWAY
-=======================================
-* This receipt serves as anti-backlash legal verification that automated reminders were successfully delivered.
-  `;
-  document.getElementById('proofContent').textContent = content;
-  document.getElementById('proofModal').style.display = 'flex';
-}
-
-function renderPartnerScores() {
+// PARTNER SCORES
+function renderScores() {
   document.getElementById('partnerScoreRows').innerHTML = partners.map(p => `
     <tr>
       <td><b>${p.name}</b></td>
-      <td style="font-weight:800; font-size:16px">${p.score}</td>
-      <td><span class="pill ${p.score >= 80 ? 'paid' : p.score >= 70 ? 'due' : 'over'}">${p.score >= 80 ? 'EXCELLENT' : 'ATTENTION'}</span></td>
-      <td><span style="color:var(--muted); font-size:13px">${p.trend}</span></td>
+      <td style="font-weight:900; font-size:16px; color:var(--blue)">${p.score}</td>
+      <td><span class="pill ${p.score>=90?'paid':p.score>=80?'on':p.score>=70?'due':'over'}">${p.score>=90?'EXCELLENT':p.score>=80?'GOOD':p.score>=70?'MONITOR':'ATTENTION'}</span></td>
+      <td><small style="color:var(--text-muted)">${p.trend}</small></td>
     </tr>
   `).join('');
 }
 
-// --- UTILS ---
+// UTILS
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 function showToast(msg) {
   const container = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `<span>⚡</span><div>${msg}</div>`;
-  container.appendChild(toast);
-  setTimeout(() => toast.remove(), 4000);
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>⚡</span><div>${msg}</div>`;
+  container.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
 }
 
-// Initialize on Load
+// INITIALIZATION
 updateClock();
 renderAll();
 </script>
