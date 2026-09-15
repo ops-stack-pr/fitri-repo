@@ -147,13 +147,11 @@ button, input, select, textarea { font: inherit; }
 .progress-bar-fill { height: 100%; background: var(--blue); border-radius: 99px; }
 .barrow { display: grid; grid-template-columns: 180px 1fr 50px; gap: 12px; align-items: center; margin: 12px 0; font-size: 12px; }
 
-/* AI Chat Assistant UI */
 .chat-box { height: 260px; overflow-y: auto; border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; background: var(--bg); display: flex; flex-direction: column; gap: 8px; }
 .chat-msg { max-width: 80%; padding: 8px 12px; border-radius: 10px; font-size: 12px; }
 .chat-msg.partner { background: var(--card); border: 1px solid var(--card-border); align-self: flex-start; }
 .chat-msg.ai { background: var(--blue-subtle); color: var(--blue); border: 1px solid var(--blue-border); align-self: flex-end; }
 
-/* Printable PDF Styling */
 #pdfTemplate { background: #ffffff; color: #0f172a; padding: 40px; font-family: Arial, sans-serif; display: none; }
 
 .toast-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 8px; z-index: 1100; }
@@ -176,33 +174,33 @@ button, input, select, textarea { font: inherit; }
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px">
       <div style="display:flex; align-items:center; gap:10px">
         <img src="logo-gbk-red.png" alt="GBK Logo" id="authLogo" onerror="this.style.display='none'" style="height:36px">
-        <b style="font-size:16px">Smart Partner Tracker</b>
+        <b style="font-size:16px" data-i18n="portalName">Smart Partner Tracker</b>
       </div>
       <div class="lang-selector">
         <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
         <button class="lang-btn" onclick="setLanguage('id')">ID</button>
       </div>
     </div>
-    <h3 id="authTitle" style="margin:0 0 6px">Sign In to Enterprise Portal</h3>
-    <p id="authSub" style="color:var(--text-muted); font-size:12.5px; margin:0 0 18px">Access control based on administrative role authorization.</p>
+    <h3 id="authTitle" style="margin:0 0 6px" data-i18n="authSignInTitle">Sign In to Enterprise Portal</h3>
+    <p id="authSub" style="color:var(--text-muted); font-size:12.5px; margin:0 0 18px" data-i18n="authSignInSub">Access control based on administrative role authorization.</p>
     <form onsubmit="handleAuth(event)">
       <div class="form-group">
-        <label id="lblAdminName">Admin Full Name</label>
+        <label id="lblAdminName" data-i18n="lblAdminName">Admin Full Name</label>
         <input type="text" id="authName" class="form-input" placeholder="e.g. Ries / Fitri NH" required>
       </div>
       <div class="form-group">
-        <label id="lblRole">Select Access Role (RBAC)</label>
+        <label id="lblRole" data-i18n="lblRole">Select Access Role (RBAC)</label>
         <select id="authRole" class="form-input">
-          <option value="admin">Super Admin / Finance Head</option>
-          <option value="pic">Operations PIC Officer</option>
-          <option value="partner">Corporate Partner View (Read-Only)</option>
+          <option value="admin" data-i18n="roleAdmin">Super Admin / Finance Head</option>
+          <option value="pic" data-i18n="rolePic">Operations PIC Officer</option>
+          <option value="partner" data-i18n="rolePartner">Corporate Partner View (Read-Only)</option>
         </select>
       </div>
       <div class="form-group">
-        <label id="lblPassword">Password</label>
+        <label id="lblPassword" data-i18n="lblPassword">Password</label>
         <input type="password" class="form-input" value="••••••••" required>
       </div>
-      <button type="submit" class="btn" style="width:100%; justify-content:center; padding:12px" id="btnLogin">Sign In to Dashboard →</button>
+      <button type="submit" class="btn" style="width:100%; justify-content:center; padding:12px" id="btnLogin" data-i18n="btnLoginText">Sign In to Dashboard →</button>
     </form>
   </div>
 </div>
@@ -225,7 +223,7 @@ button, input, select, textarea { font: inherit; }
         <button onclick="go('scores')" data-nav="scores">★ <span data-i18n="navScores">Partner Performance</span></button>
       </nav>
     </div>
-    <div style="font-size:11px; color:var(--text-muted); border-top:1px solid var(--line); padding-top:14px">
+    <div style="font-size:11px; color:var(--text-muted); border-top:1px solid var(--line); padding-top:14px" data-i18n="footerText">
       © 2026 PPKGBK • Tax Compliant Engine
     </div>
   </aside>
@@ -236,13 +234,12 @@ button, input, select, textarea { font: inherit; }
     <div class="top-bar">
       <div>
         <div class="greeting" id="dynGreeting">Good Day 👋</div>
-        <div class="sub-greeting" id="dynSub">Monitoring invoice status, push reminders & tax breakdown</div>
+        <div class="sub-greeting" id="dynSub" data-i18n="topBarSub">Monitoring invoice status, push reminders & tax breakdown</div>
       </div>
       <div class="controls-group">
-        <!-- RBAC Switcher Indicator -->
         <span class="pill on" id="roleBadge">ROLE: SUPER ADMIN</span>
         <button class="toggle-btn" onclick="toggleTheme()">
-          <span id="themeIcon">🌙</span> <span id="themeLabel">Dark</span>
+          <span id="themeIcon">🌙</span> <span id="themeLabel" data-i18n="themeDark">Dark</span>
         </button>
         <div class="lang-selector">
           <button class="lang-btn active" id="btnLangEn" onclick="setLanguage('en')">EN</button>
@@ -258,10 +255,10 @@ button, input, select, textarea { font: inherit; }
     <section id="dashboard" class="screen active">
       <div class="grid metrics">
         <div class="card metric" onclick="filterFromDash('All')"><div class="label" data-i18n="mTotal">TOTAL INVOICES</div><div class="num" id="mTotalVal">0</div><div class="hint" data-i18n="mClickView">Click to view all</div></div>
-        <div class="card metric" onclick="filterFromDash('On Track')"><div class="label" style="color:var(--blue)" data-i18n="mOnTrack">● ON TRACK</div><div class="num" id="mOnTrackVal">0</div><div class="hint">> H-7 Left</div></div>
-        <div class="card metric" onclick="filterFromDash('Due Soon')"><div class="label" style="color:var(--yellow)" data-i18n="mDueSoon">● DUE SOON</div><div class="num" id="mDueSoonVal">0</div><div class="hint">H-7 to H-1</div></div>
-        <div class="card metric" onclick="filterFromDash('Overdue')"><div class="label" style="color:var(--red)" data-i18n="mOverdue">● OVERDUE</div><div class="num" id="mOverdueVal">0</div><div class="hint">Past Due Date</div></div>
-        <div class="card metric" onclick="filterFromDash('Paid')"><div class="label" style="color:var(--green)" data-i18n="mPaid">● PAID</div><div class="num" id="mPaidVal">0</div><div class="hint">Settled via Xendit</div></div>
+        <div class="card metric" onclick="filterFromDash('On Track')"><div class="label" style="color:var(--blue)" data-i18n="mOnTrack">● ON TRACK</div><div class="num" id="mOnTrackVal">0</div><div class="hint" data-i18n="hintOnTrack">> H-7 Left</div></div>
+        <div class="card metric" onclick="filterFromDash('Due Soon')"><div class="label" style="color:var(--yellow)" data-i18n="mDueSoon">● DUE SOON</div><div class="num" id="mDueSoonVal">0</div><div class="hint" data-i18n="hintDueSoon">H-7 to H-1</div></div>
+        <div class="card metric" onclick="filterFromDash('Overdue')"><div class="label" style="color:var(--red)" data-i18n="mOverdue">● OVERDUE</div><div class="num" id="mOverdueVal">0</div><div class="hint" data-i18n="hintOverdue">Past Due Date</div></div>
+        <div class="card metric" onclick="filterFromDash('Paid')"><div class="label" style="color:var(--green)" data-i18n="mPaid">● PAID</div><div class="num" id="mPaidVal">0</div><div class="hint" data-i18n="hintPaid">Settled via Xendit</div></div>
       </div>
 
       <div class="grid" style="grid-template-columns: 1.4fr 1fr; margin-top:20px">
@@ -292,7 +289,7 @@ button, input, select, textarea { font: inherit; }
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px">
           <div style="flex:1; min-width:280px; display:flex; gap:10px">
-            <input type="text" id="searchInput" class="form-input" placeholder="🔍 Query tag (e.g., INV-002) or Company Name..." oninput="renderInvoices()">
+            <input type="text" id="searchInput" class="form-input" placeholder="🔍 Query tag (e.g., INV-002) or Company Name..." data-i18n-placeholder="searchPlaceholder" oninput="renderInvoices()">
           </div>
           <div style="display:flex; gap:8px">
             <button class="btn rbac-admin-only" onclick="openNewInvoiceModal()">+ <span data-i18n="btnNewInv">Create Tax Invoice</span></button>
@@ -320,10 +317,10 @@ button, input, select, textarea { font: inherit; }
               <th data-i18n="thPartner">Partner Company</th>
               <th data-i18n="thDueDate">Due Date</th>
               <th data-i18n="thAmount">Total Gross</th>
-              <th>Indonesian Tax Info</th>
+              <th data-i18n="thTaxInfo">Indonesian Tax Info</th>
               <th data-i18n="thStatus">Status</th>
               <th data-i18n="thGateway">Xendit Gateway</th>
-              <th>Actions</th>
+              <th data-i18n="thActions">Actions</th>
             </tr>
           </thead>
           <tbody id="invoiceRows"></tbody>
@@ -347,46 +344,50 @@ button, input, select, textarea { font: inherit; }
         </div>
 
         <!-- TAX BREAKDOWN DISPLAY -->
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:20px 0">
-          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
-            <small style="color:var(--text-muted); font-size:11px; font-weight:700">BASE DPP AMOUNT</small>
-            <div style="font-size:16px; font-weight:800; margin-top:4px" id="dDpp">Rp 0</div>
+        <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin:20px 0">
+          <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--text-muted); font-size:10px; font-weight:700" data-i18n="taxDppLbl">BASE DPP</small>
+            <div style="font-size:15px; font-weight:800; margin-top:4px" id="dDpp">Rp 0</div>
           </div>
-          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
-            <small style="color:var(--blue); font-size:11px; font-weight:700">PPN (11% VAT)</small>
-            <div style="font-size:16px; font-weight:800; margin-top:4px; color:var(--blue)" id="dPpn">Rp 0</div>
+          <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--blue); font-size:10px; font-weight:700" data-i18n="taxPpnLbl">PPN (11%)</small>
+            <div style="font-size:15px; font-weight:800; margin-top:4px; color:var(--blue)" id="dPpn">Rp 0</div>
           </div>
-          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
-            <small style="color:var(--red); font-size:11px; font-weight:700">PPh 23 WITHHOLDING</small>
-            <div style="font-size:16px; font-weight:800; margin-top:4px; color:var(--red)" id="dPph">Rp 0</div>
+          <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--yellow); font-size:10px; font-weight:700" data-i18n="taxPbjtLbl">PBJT OLAHRAGA (10%)</small>
+            <div style="font-size:15px; font-weight:800; margin-top:4px; color:var(--yellow)" id="dPbjt">Rp 0</div>
           </div>
-          <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--card-border)">
-            <small style="color:var(--green); font-size:11px; font-weight:700">TOTAL NET PAYABLE</small>
-            <div style="font-size:16px; font-weight:900; margin-top:4px; color:var(--green)" id="dNet">Rp 0</div>
+          <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--red); font-size:10px; font-weight:700" data-i18n="taxPphLbl">PPH 23 (2%)</small>
+            <div style="font-size:15px; font-weight:800; margin-top:4px; color:var(--red)" id="dPph">Rp 0</div>
+          </div>
+          <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border)">
+            <small style="color:var(--green); font-size:10px; font-weight:700" data-i18n="taxNetLbl">NET PAYABLE</small>
+            <div style="font-size:15px; font-weight:900; margin-top:4px; color:var(--green)" id="dNet">Rp 0</div>
           </div>
         </div>
 
         <div style="font-weight:800; font-size:15px; margin-top:20px" data-i18n="lifecycleTitle">🔔 Auto Push Reminder Lifecycle (H-7, H-3, H-1)</div>
         <div class="timeline" id="dTimeline"></div>
 
-        <!-- AI CHAT BOT SIMULATOR FOR THIS INVOICE -->
-        <div style="font-weight:800; font-size:15px; margin-top:22px">🤖 AI Partner WhatsApp Response Simulator</div>
+        <!-- AI CHAT BOT SIMULATOR -->
+        <div style="font-weight:800; font-size:15px; margin-top:22px" data-i18n="aiChatTitle">🤖 AI Partner WhatsApp Response Simulator</div>
         <div style="margin-top:8px">
           <div class="chat-box" id="aiChatBox">
-            <div class="chat-msg partner">Hi GBK Team, regarding INV-001, we received the H-3 reminder. Can we verify the PPh 23 deduction receipt?</div>
-            <div class="chat-msg ai">Bot System: PPh 23 rate of 2% has been calculated automatically (Rp 500,000). You can proceed to pay the net amount via Xendit gateway.</div>
+            <div class="chat-msg partner" data-i18n="aiMsg1">Hi GBK Team, regarding INV-001, we received the H-3 reminder. Can we verify the PPh 23 deduction receipt?</div>
+            <div class="chat-msg ai" data-i18n="aiMsg2">Bot System: PPh 23 rate of 2% has been calculated automatically. You can proceed to pay the net amount via Xendit gateway.</div>
           </div>
           <div style="display:flex; gap:8px; margin-top:8px">
-            <input type="text" id="aiChatInput" class="form-input" placeholder="Type a simulated partner reply (e.g., 'Request extension' or 'Paid')...">
-            <button class="btn" onclick="sendAiSimulatedMessage()">Simulate</button>
+            <input type="text" id="aiChatInput" class="form-input" placeholder="Type a simulated partner reply (e.g., 'Request extension' or 'Paid')..." data-i18n-placeholder="aiPlaceholder">
+            <button class="btn" onclick="sendAiSimulatedMessage()" data-i18n="btnSimulateChat">Simulate</button>
           </div>
         </div>
 
         <div style="font-weight:800; font-size:15px; margin-top:22px" data-i18n="paymentSec">💰 Payment Gateway & Settlement</div>
         <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:16px; border-radius:12px; border:1px solid var(--card-border); margin-top:10px">
           <div>
-            <b id="dPaymentText" style="font-size:14.5px">Belum Dibayar</b>
-            <div style="color:var(--text-muted); font-size:12px; margin-top:2px" data-i18n="paymentSub">Simulate Xendit gateway collection flow or manual payment verification.</div>
+            <b id="dPaymentText" style="font-size:14.5px" data-i18n="unpaidStatus">Belum Dibayar</b>
+            <div style="color:var(--text-muted); font-size:12px; margin-top:2px" data-i18n="paymentSub">Simulate Xendit collection flow or manual payment verification.</div>
           </div>
           <div id="dPaymentAction"></div>
         </div>
@@ -413,10 +414,10 @@ button, input, select, textarea { font: inherit; }
             <tr>
               <th data-i18n="thInv">Invoice</th>
               <th data-i18n="thPartner">Partner</th>
-              <th>H-7 Notif</th>
-              <th>H-3 Notif</th>
-              <th>H-1 Notif</th>
-              <th>Multi-Channel Status</th>
+              <th data-i18n="thH7">H-7 Notif</th>
+              <th data-i18n="thH3">H-3 Notif</th>
+              <th data-i18n="thH1">H-1 Notif</th>
+              <th data-i18n="thChannelStatus">Multi-Channel Status</th>
               <th data-i18n="thAction">Send Action</th>
             </tr>
           </thead>
@@ -436,7 +437,7 @@ button, input, select, textarea { font: inherit; }
                 <th data-i18n="thPartner">Partner</th>
                 <th data-i18n="thScore">Score</th>
                 <th data-i18n="thCategory">Rating Category</th>
-                <th>History Trend</th>
+                <th data-i18n="thTrend">History Trend</th>
               </tr>
             </thead>
             <tbody id="partnerScoreRows"></tbody>
@@ -453,7 +454,7 @@ button, input, select, textarea { font: inherit; }
           <div class="barrow"><span data-i18n="m4">Overdue Frequency</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:38%"></div></div><b>15%</b></div>
           <div class="barrow"><span data-i18n="m5">Consistency</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%"></div></div><b>10%</b></div>
 
-          <div style="background:var(--bg); border:1px solid var(--card-border); padding:12px; border-radius:10px; font-size:11.5px; color:var(--text-muted); margin-top:20px">
+          <div style="background:var(--bg); border:1px solid var(--card-border); padding:12px; border-radius:10px; font-size:11.5px; color:var(--text-muted); margin-top:20px" data-i18n="ratingScaleText">
             <b>Rating Scale:</b><br>
             90–100 Excellent • 80–89 Good • 70–79 Monitor • &lt;70 Attention Needed
           </div>
@@ -468,7 +469,7 @@ button, input, select, textarea { font: inherit; }
   <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0f172a; padding-bottom:15px; margin-bottom:20px">
     <div>
       <h2 style="margin:0; color:#2563eb">PUSAT PENGELOLAAN KOMPLEKS GELORA BUNG KARNO</h2>
-      <small style="color:#64748b">Official Tax Invoice & Billing Certificate</small>
+      <small style="color:#64748b">Official Tax Invoice & Sports Venue Billing Certificate (UU HPP & PBJT)</small>
     </div>
     <img src="logo-gbk-red.png" style="height:45px">
   </div>
@@ -485,25 +486,30 @@ button, input, select, textarea { font: inherit; }
   <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px" border="1" cellpadding="8">
     <thead style="background:#f1f5f9">
       <tr>
-        <th>Description</th>
-        <th>Tax Law Regulation</th>
+        <th>Description & Tax Regulation</th>
+        <th>Rate</th>
         <th>Amount (IDR)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Base Venue / Service Rental (DPP)</td>
-        <td>UU Harmonisasi Peraturan Perpajakan</td>
+        <td>Base Venue / Sport Facility Rental (DPP)</td>
+        <td>Base</td>
         <td id="pdfDpp"></td>
       </tr>
       <tr>
-        <td>PPN (11% VAT)</td>
-        <td>UU HPP Pasat 7 (11% Tax Rate)</td>
+        <td>PPN (11% VAT) — UU Harmonisasi Peraturan Perpajakan</td>
+        <td>11%</td>
         <td id="pdfPpn"></td>
       </tr>
       <tr>
-        <td>PPh 23 Withholding Tax (2%)</td>
-        <td>Pasal 23 UU PPh (Jasa Perusahaan)</td>
+        <td>PBJT Olahraga (Sports Entertainment Tax) — UU Hubungan Keuangan Pusat dan Daerah</td>
+        <td>10%</td>
+        <td id="pdfPbjt"></td>
+      </tr>
+      <tr>
+        <td>PPh 23 Withholding Tax (Corporate Services)</td>
+        <td>2% (Deduct)</td>
         <td id="pdfPph"></td>
       </tr>
       <tr style="font-weight:bold; background:#f8fafc">
@@ -513,7 +519,7 @@ button, input, select, textarea { font: inherit; }
     </tbody>
   </table>
   <div style="margin-top:40px; text-align:right">
-    <small>Verified by GBK Smart Enterprise Portal</small><br>
+    <small>Verified by GBK Smart Enterprise Tax Portal</small><br>
     <b id="pdfSigner">Fitri NH — Public Relations & Finance Officer</b>
   </div>
 </div>
@@ -532,28 +538,25 @@ button, input, select, textarea { font: inherit; }
         <input type="text" id="newInvPartner" class="form-input" placeholder="e.g. PT Gelora Nusantara" required>
       </div>
       <div class="form-group">
-        <label>Currency & Base Amount (DPP - Dasar Pengenaan Pajak)</label>
-        <div style="display:flex; gap:8px">
-          <select id="newInvCurrency" class="form-input" style="width:90px" onchange="calculateTaxPreview()">
-            <option value="IDR">IDR (Rp)</option>
-            <option value="USD">USD ($)</option>
-          </select>
-          <input type="number" id="newInvAmount" class="form-input" placeholder="e.g. 25000000" oninput="calculateTaxPreview()" required>
-        </div>
+        <label data-i18n="lblBaseDpp">Base Amount (DPP - Dasar Pengenaan Pajak Rupiah)</label>
+        <input type="number" id="newInvAmount" class="form-input" placeholder="e.g. 25000000" oninput="calculateTaxPreview()" required>
       </div>
 
       <!-- INDONESIAN TAX LAW REGULATION CALCULATOR -->
       <div style="background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--card-border); margin-bottom:16px">
-        <div style="font-size:11px; font-weight:800; color:var(--blue); margin-bottom:8px">INDONESIAN TAX LAW CALCULATOR (UU HPP & PPh 23)</div>
-        <div style="display:flex; gap:12px; margin-bottom:8px">
-          <label style="font-size:12px; display:flex; align-items:center; gap:4px">
-            <input type="checkbox" id="chkPpn" checked onchange="calculateTaxPreview()"> Include PPN 11%
+        <div style="font-size:11px; font-weight:800; color:var(--blue); margin-bottom:8px" data-i18n="taxLawHeader">INDONESIAN TAX LAW CALCULATOR (UU HPP, PBJT OLAHRAGA & PPh 23)</div>
+        <div style="display:grid; gap:8px; margin-bottom:8px">
+          <label style="font-size:12px; display:flex; align-items:center; gap:6px">
+            <input type="checkbox" id="chkPpn" checked onchange="calculateTaxPreview()"> <span data-i18n="chkPpnText">Include PPN 11% (VAT - UU HPP)</span>
           </label>
-          <label style="font-size:12px; display:flex; align-items:center; gap:4px">
-            <input type="checkbox" id="chkPph" checked onchange="calculateTaxPreview()"> Deduct PPh 23 (2%)
+          <label style="font-size:12px; display:flex; align-items:center; gap:6px">
+            <input type="checkbox" id="chkPbjt" checked onchange="calculateTaxPreview()"> <span data-i18n="chkPbjtText">Include PBJT Olahraga 10% (Sports Entertainment Tax - UU HKPD)</span>
+          </label>
+          <label style="font-size:12px; display:flex; align-items:center; gap:6px">
+            <input type="checkbox" id="chkPph" checked onchange="calculateTaxPreview()"> <span data-i18n="chkPphText">Deduct PPh 23 Withholding Tax (2%)</span>
           </label>
         </div>
-        <div style="font-size:11.5px; color:var(--text-muted)" id="taxPreviewText">Base DPP: Rp 0 | PPN 11%: Rp 0 | PPh 23: -Rp 0 | Net: Rp 0</div>
+        <div style="font-size:11.5px; color:var(--text-muted)" id="taxPreviewText">Base DPP: Rp 0 | PPN: Rp 0 | PBJT: Rp 0 | PPh: -Rp 0 | Net: Rp 0</div>
       </div>
 
       <div class="form-group">
@@ -573,22 +576,22 @@ button, input, select, textarea { font: inherit; }
   <div class="modal-box" style="border-top: 4px solid var(--xendit)">
     <div style="display:flex; justify-content:space-between; align-items:center">
       <h3 style="margin:0; color:var(--xendit)">Xendit Payment Gateway</h3>
-      <span class="pill paid">VERIFIED SECURE</span>
+      <span class="pill paid" data-i18n="secureVerified">VERIFIED SECURE</span>
     </div>
     <p style="color:var(--text-muted); font-size:12.5px; margin:4px 0 16px" id="xenditInvTag">Invoice: INV-000</p>
 
     <div style="background:var(--xendit-subtle); padding:16px; border-radius:12px; margin-bottom:16px; border:1px solid var(--card-border)">
-      <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase" data-i18n="lblPayable">Total Payable Net Amount</div>
+      <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase" data-i18n="lblPayable">Total Payable Net Amount (IDR Rupiah)</div>
       <div style="font-size:24px; font-weight:900; color:var(--text); margin-top:2px" id="xenditAmount">Rp 0</div>
-      <div style="font-size:11px; color:var(--text-muted); margin-top:4px" id="xenditTaxNote">Includes PPN 11% & Net of PPh 23 Tax Withholding</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:4px" data-i18n="xenditTaxNote">Includes PPN 11%, PBJT Olahraga 10% & Net of PPh 23 Tax Withholding</div>
     </div>
 
     <div class="form-group">
       <label data-i18n="lblPayMethod">Select Payment Channel</label>
       <select class="form-input" id="payMethod">
-        <option>Xendit Virtual Account (BCA / Mandiri / BNI)</option>
-        <option>QRIS Instant Settlement</option>
-        <option>Credit / Debit Card</option>
+        <option data-i18n="optVa">Xendit Virtual Account (BCA / Mandiri / BNI)</option>
+        <option data-i18n="optQris">QRIS Instant Settlement</option>
+        <option data-i18n="optCard">Credit / Debit Card</option>
       </select>
     </div>
 
@@ -602,55 +605,220 @@ button, input, select, textarea { font: inherit; }
 <div id="toastContainer" class="toast-container"></div>
 
 <script>
-// STATE MANAGEMENT
 let currentUser = "Fitri NH";
-let currentRole = "admin"; // 'admin', 'pic', 'partner'
+let currentRole = "admin";
 let currentLang = "en";
 let currentTheme = "light";
 let selectedInvoiceId = "INV-001";
 
 const i18n = {
   en: {
-    brandSub: "Enterprise Management", navDash: "Dashboard", navInvoices: "Invoice Tracker", navReminders: "Reminder Status Log", navScores: "Partner Performance",
-    mTotal: "TOTAL INVOICES", mOnTrack: "● ON TRACK", mDueSoon: "● DUE SOON", mOverdue: "● OVERDUE", mPaid: "● PAID", mClickView: "Click to filter",
-    attnTitle: "⚠️ Immediate Attention Needed", topPartners: "🏆 Top Reliable Partners",
-    btnNewInv: "Create Tax Invoice", breakdownTitle: "Company Total Outstanding Debt", bkLedger: "Billing History & Tax Ledger",
-    thInv: "Tag #", thPartner: "Partner Company", thAmount: "Total Gross", thStatus: "Status", thAction: "Action", thDueDate: "Due Date", thGateway: "Xendit Gateway",
-    invDetailTitle: "Invoice Detailed Inspection & Tax Breakdown", btnPdf: "📄 Download e-Invoice PDF",
-    lifecycleTitle: "🔔 Auto Push Reminder Lifecycle (H-7, H-3, H-1)", paymentSec: "💰 Payment Gateway & Settlement", paymentSub: "Simulate Xendit collection flow or payment verification.",
-    btnBack: "Back to Tracker", reminderHubTitle: "🔔 Reminder Status Log & Push Notification Hub", reminderHubSub: "Live delivery logs for Email, SMS & WhatsApp with anti-backlash proof",
-    btnSimulateMass: "🚀 Trigger Auto Push to All", partnerPerfTitle: "★ Partner Reliability Performance", thScore: "Score", thCategory: "Rating Category",
-    modelTitle: "📊 Scoring Infographic Model", modelSub: "Automated weighted evaluation criteria",
-    m1: "Payment Timeliness", m2: "Reminder Response", m3: "Admin Compliance", m4: "Overdue Frequency", m5: "Consistency",
-    createModalTitle: "Create New Tax Invoice Tag", lblAutoTag: "Generated Invoice Tag", lblPartnerName: "Partner Company Name", btnSubmitInv: "Save & Issue Tax Invoice",
-    btnCancel: "Cancel", lblPayable: "Total Payable Net Amount", lblPayMethod: "Select Payment Channel", btnPayNow: "⚡ Pay via Xendit Instant",
-    gMorning: "Good Morning", gAfternoon: "Good Afternoon", gEvening: "Good Evening", gNight: "Good Night"
+    portalName: "Smart Partner Tracker",
+    authSignInTitle: "Sign In to Enterprise Portal",
+    authSignInSub: "Access control based on administrative role authorization.",
+    lblAdminName: "Admin Full Name",
+    lblRole: "Select Access Role (RBAC)",
+    roleAdmin: "Super Admin / Finance Head",
+    rolePic: "Operations PIC Officer",
+    rolePartner: "Corporate Partner View (Read-Only)",
+    lblPassword: "Password",
+    btnLoginText: "Sign In to Dashboard →",
+    brandSub: "Enterprise Management",
+    navDash: "Dashboard",
+    navInvoices: "Invoice Tracker",
+    navReminders: "Reminder Status Log",
+    navScores: "Partner Performance",
+    footerText: "© 2026 PPKGBK • Tax Compliant Engine",
+    topBarSub: "Monitoring invoice status, push reminders & tax breakdown",
+    themeDark: "Dark",
+    themeLight: "Light",
+    mTotal: "TOTAL INVOICES",
+    mOnTrack: "● ON TRACK",
+    mDueSoon: "● DUE SOON",
+    mOverdue: "● OVERDUE",
+    mPaid: "● PAID",
+    mClickView: "Click to view all",
+    hintOnTrack: "> H-7 Left",
+    hintDueSoon: "H-7 to H-1",
+    hintOverdue: "Past Due Date",
+    hintPaid: "Settled via Xendit",
+    attnTitle: "⚠️ Immediate Attention Needed",
+    topPartners: "🏆 Top Reliable Partners",
+    btnNewInv: "Create Tax Invoice",
+    searchPlaceholder: "🔍 Query tag (e.g., INV-002) or Company Name...",
+    breakdownTitle: "Company Total Outstanding Debt",
+    bkLedger: "Billing History & Tax Ledger",
+    thInv: "Tag #",
+    thPartner: "Partner Company",
+    thDueDate: "Due Date",
+    thAmount: "Total Gross",
+    thTaxInfo: "Indonesian Tax Info",
+    thStatus: "Status",
+    thGateway: "Xendit Gateway",
+    thActions: "Actions",
+    invDetailTitle: "Invoice Detailed Inspection & Tax Breakdown",
+    btnPdf: "📄 Download e-Invoice PDF",
+    taxDppLbl: "BASE DPP",
+    taxPpnLbl: "PPN (11%)",
+    taxPbjtLbl: "PBJT OLAHRAGA (10%)",
+    taxPphLbl: "PPH 23 (2%)",
+    taxNetLbl: "NET PAYABLE",
+    lifecycleTitle: "🔔 Auto Push Reminder Lifecycle (H-7, H-3, H-1)",
+    aiChatTitle: "🤖 AI Partner WhatsApp Response Simulator",
+    aiMsg1: "Hi GBK Team, regarding INV-001, we received the H-3 reminder. Can we verify the PPh 23 deduction receipt?",
+    aiMsg2: "Bot System: PPh 23 rate of 2% has been calculated automatically. You can proceed to pay the net amount via Xendit gateway.",
+    aiPlaceholder: "Type a simulated partner reply (e.g., 'Request extension' or 'Paid')...",
+    btnSimulateChat: "Simulate",
+    paymentSec: "💰 Payment Gateway & Settlement",
+    unpaidStatus: "Belum Dibayar",
+    paymentSub: "Simulate Xendit collection flow or manual payment verification.",
+    btnBack: "Back to Tracker",
+    reminderHubTitle: "🔔 Reminder Status Log & Push Notification Hub",
+    reminderHubSub: "Live delivery logs for Email, SMS & WhatsApp with anti-backlash proof",
+    btnSimulateMass: "🚀 Trigger Auto Push to All",
+    thH7: "H-7 Notif",
+    thH3: "H-3 Notif",
+    thH1: "H-1 Notif",
+    thChannelStatus: "Multi-Channel Status",
+    partnerPerfTitle: "★ Partner Reliability Performance",
+    thScore: "Score",
+    thCategory: "Rating Category",
+    thTrend: "History Trend",
+    modelTitle: "📊 Scoring Infographic Model",
+    modelSub: "Automated weighted evaluation criteria",
+    m1: "Payment Timeliness",
+    m2: "Reminder Response",
+    m3: "Admin Compliance",
+    m4: "Overdue Frequency",
+    m5: "Consistency",
+    ratingScaleText: "<b>Rating Scale:</b><br>90–100 Excellent • 80–89 Good • 70–79 Monitor • &lt;70 Attention Needed",
+    createModalTitle: "Create New Tax Invoice Tag",
+    lblAutoTag: "Generated Invoice Tag",
+    lblPartnerName: "Partner Company Name",
+    lblBaseDpp: "Base Amount (DPP - Dasar Pengenaan Pajak Rupiah)",
+    taxLawHeader: "INDONESIAN TAX LAW CALCULATOR (UU HPP, PBJT OLAHRAGA & PPh 23)",
+    chkPpnText: "Include PPN 11% (VAT - UU HPP)",
+    chkPbjtText: "Include PBJT Olahraga 10% (Sports Entertainment Tax - UU HKPD)",
+    chkPphText: "Deduct PPh 23 Withholding Tax (2%)",
+    btnSubmitInv: "Save & Issue Tax Invoice",
+    btnCancel: "Cancel",
+    secureVerified: "VERIFIED SECURE",
+    lblPayable: "Total Payable Net Amount (IDR Rupiah)",
+    xenditTaxNote: "Includes PPN 11%, PBJT Olahraga 10% & Net of PPh 23 Tax Withholding",
+    lblPayMethod: "Select Payment Channel",
+    optVa: "Xendit Virtual Account (BCA / Mandiri / BNI)",
+    optQris: "QRIS Instant Settlement",
+    optCard: "Credit / Debit Card",
+    btnPayNow: "⚡ Pay via Xendit Instant"
   },
   id: {
-    brandSub: "Manajemen Enterprise", navDash: "Dashboard", navInvoices: "Pelacak Invoice", navReminders: "Log Status Pengingat", navScores: "Performa Mitra",
-    mTotal: "TOTAL INVOICE", mOnTrack: "● LANCAR", mDueSoon: "● HAMPIR TEMPO", mOverdue: "● TERLAMBAT", mPaid: "● LUNAS", mClickView: "Klik untuk filter",
-    attnTitle: "⚠️ Perhatian Mendesak Diperlukan", topPartners: "🏆 Mitra Paling Andal",
-    btnNewInv: "Buat Invoice Pajak", breakdownTitle: "Total Tunggakan Tagihan Mitra", bkLedger: "Rincian Histori Tagihan & Pajak",
-    thInv: "Tag #", thPartner: "Perusahaan Mitra", thAmount: "Total Bruto", thStatus: "Status", thAction: "Aksi", thDueDate: "Jatuh Tempo", thGateway: "Pembayaran Xendit",
-    invDetailTitle: "Inspeksi Detail Invoice & Rincian Pajak", btnPdf: "📄 Unduh PDF e-Invoice",
-    lifecycleTitle: "🔔 Siklus Pengingat Notifikasi Push (H-7, H-3, H-1)", paymentSec: "💰 Gerbang Pembayaran & Pelunasan", paymentSub: "Simulasi alur penagihan Xendit atau verifikasi pembayaran.",
-    btnBack: "Kembali ke Pelacak", reminderHubTitle: "🔔 Log Status Pengingat & Hub Notifikasi Push", reminderHubSub: "Log pengiriman langsung via Email, SMS & WhatsApp beserta bukti pengiriman",
-    btnSimulateMass: "🚀 Kirim Notifikasi Otomatis Ke Semua", partnerPerfTitle: "★ Penilaian Performa Keandalan Mitra", thScore: "Skor", thCategory: "Kategori Performa",
-    modelTitle: "📊 Model Infografis Penilaian", modelSub: "Kriteria penilaian terbobot otomatis",
-    m1: "Ketepatan Waktu Bayar", m2: "Respons Pengingat", m3: "Kepatuhan Administrasi", m4: "Frekuensi Terlambat", m5: "Konsistensi",
-    createModalTitle: "Buat Tag Invoice Pajak Baru", lblAutoTag: "Tag Invoice Otomatis", lblPartnerName: "Nama Perusahaan Mitra", btnSubmitInv: "Simpan & Terbitkan Tag Pajak",
-    btnCancel: "Batal", lblPayable: "Total Jumlah Bersih Dibayar", lblPayMethod: "Pilih Saluran Pembayaran", btnPayNow: "⚡ Bayar via Xendit Otomatis",
-    gMorning: "Selamat Pagi", gAfternoon: "Selamat Siang", gEvening: "Selamat Sore", gNight: "Selamat Malam"
+    portalName: "Pelacak Mitra Pintar",
+    authSignInTitle: "Masuk ke Portal Perusahaan",
+    authSignInSub: "Kontrol akses berdasarkan otorisasi peran administratif.",
+    lblAdminName: "Nama Lengkap Admin",
+    lblRole: "Pilih Peran Akses (RBAC)",
+    roleAdmin: "Super Admin / Kepala Keuangan",
+    rolePic: "Petugas PIC Operasional",
+    rolePartner: "Tampilan Mitra Korporat (Hanya Lihat)",
+    lblPassword: "Kata Sandi",
+    btnLoginText: "Masuk ke Dashboard →",
+    brandSub: "Manajemen Enterprise",
+    navDash: "Dashboard",
+    navInvoices: "Pelacak Invoice",
+    navReminders: "Log Status Pengingat",
+    navScores: "Performa Mitra",
+    footerText: "© 2026 PPKGBK • Mesin Kepatuhan Pajak",
+    topBarSub: "Memantau status invoice, pengingat otomatis & rincian pajak",
+    themeDark: "Gelap",
+    themeLight: "Terang",
+    mTotal: "TOTAL INVOICE",
+    mOnTrack: "● LANCAR",
+    mDueSoon: "● HAMPIR TEMPO",
+    mOverdue: "● TERLAMBAT",
+    mPaid: "● LUNAS",
+    mClickView: "Klik untuk melihat semua",
+    hintOnTrack: "> Sisa H-7",
+    hintDueSoon: "H-7 sampai H-1",
+    hintOverdue: "Lewat Jatuh Tempo",
+    hintPaid: "Lunas via Xendit",
+    attnTitle: "⚠️ Perhatian Mendesak Diperlukan",
+    topPartners: "🏆 Mitra Paling Andal",
+    btnNewInv: "Buat Invoice Pajak",
+    searchPlaceholder: "🔍 Cari tag (cth: INV-002) atau Nama Perusahaan...",
+    breakdownTitle: "Total Tunggakan Tagihan Perusahaan",
+    bkLedger: "Histori Tagihan & Buku Besar Pajak",
+    thInv: "Tag #",
+    thPartner: "Perusahaan Mitra",
+    thDueDate: "Jatuh Tempo",
+    thAmount: "Total Bruto",
+    thTaxInfo: "Info Pajak Indonesia",
+    thStatus: "Status",
+    thGateway: "Gerbang Xendit",
+    thActions: "Aksi",
+    invDetailTitle: "Inspeksi Detail Invoice & Rincian Pajak",
+    btnPdf: "📄 Unduh PDF e-Invoice",
+    taxDppLbl: "DASAR DPP",
+    taxPpnLbl: "PPN (11%)",
+    taxPbjtLbl: "PBJT OLAHRAGA (10%)",
+    taxPphLbl: "PPH 23 (2%)",
+    taxNetLbl: "NET DIBAYAR",
+    lifecycleTitle: "🔔 Siklus Pengingat Notifikasi Push (H-7, H-3, H-1)",
+    aiChatTitle: "🤖 Simulator Respons WhatsApp Mitra AI",
+    aiMsg1: "Halo Tim GBK, terkait INV-001, kami menerima pengingat H-3. Bisakah kami verifikasi tanda terima potongan PPh 23?",
+    aiMsg2: "Sistem Bot: Tarif PPh 23 sebesar 2% telah dihitung otomatis. Silakan lanjutkan pembayaran jumlah bersih via Xendit.",
+    aiPlaceholder: "Ketik balasan simulasi mitra (cth: 'Minta perpanjangan' atau 'Sudah bayar')...",
+    btnSimulateChat: "Simulasi",
+    paymentSec: "💰 Gerbang Pembayaran & Pelunasan",
+    unpaidStatus: "Belum Dibayar",
+    paymentSub: "Simulasi alur penagihan Xendit atau verifikasi pembayaran manual.",
+    btnBack: "Kembali ke Pelacak",
+    reminderHubTitle: "🔔 Log Status Pengingat & Hub Notifikasi Push",
+    reminderHubSub: "Log pengiriman langsung via Email, SMS & WhatsApp dengan bukti sah",
+    btnSimulateMass: "🚀 Kirim Otomatis Ke Semua",
+    thH7: "Notif H-7",
+    thH3: "Notif H-3",
+    thH1: "Notif H-1",
+    thChannelStatus: "Status Multi-Saluran",
+    partnerPerfTitle: "★ Penilaian Performa Keandalan Mitra",
+    thScore: "Skor",
+    thCategory: "Kategori Performa",
+    thTrend: "Tren Histori",
+    modelTitle: "📊 Model Infografis Penilaian",
+    modelSub: "Kriteria evaluasi terbobot otomatis",
+    m1: "Ketepatan Waktu Bayar",
+    m2: "Respons Pengingat",
+    m3: "Kepatuhan Administrasi",
+    m4: "Frekuensi Terlambat",
+    m5: "Konsistensi",
+    ratingScaleText: "<b>Skala Penilaian:</b><br>90–100 Sangat Baik • 80–89 Baik • 70–79 Pantau • &lt;70 Perlu Perhatian",
+    createModalTitle: "Buat Tag Invoice Pajak Baru",
+    lblAutoTag: "Tag Invoice Otomatis",
+    lblPartnerName: "Nama Perusahaan Mitra",
+    lblBaseDpp: "Jumlah Dasar (DPP - Dasar Pengenaan Pajak Rupiah)",
+    taxLawHeader: "KALKULATOR HUKUM PAJAK INDONESIA (UU HPP, PBJT OLAHRAGA & PPh 23)",
+    chkPpnText: "Termasuk PPN 11% (PPN - UU HPP)",
+    chkPbjtText: "Termasuk PBJT Olahraga 10% (Pajak Hiburan Olahraga - UU HKPD)",
+    chkPphText: "Potong PPh 23 Pemotongan Pajak (2%)",
+    btnSubmitInv: "Simpan & Terbitkan Invoice Pajak",
+    btnCancel: "Batal",
+    secureVerified: "TERVERIFIKASI AMAN",
+    lblPayable: "Total Bersih Harus Dibayar (Rupiah IDR)",
+    xenditTaxNote: "Termasuk PPN 11%, PBJT Olahraga 10% & Bersih dari Pemotongan PPh 23",
+    lblPayMethod: "Pilih Saluran Pembayaran",
+    optVa: "Virtual Account Xendit (BCA / Mandiri / BNI)",
+    optQris: "Penyelesaian Instan QRIS",
+    optCard: "Kartu Kredit / Debit",
+    btnPayNow: "⚡ Bayar via Xendit Instan"
   }
 };
 
-// DATASET WITH TAX LAWS INCLUDED
+// DATASET WITH FULL INDONESIAN TAX LAWS (PPN 11% UU HPP, PBJT Olahraga 10% UU HKPD, PPh 23 2%)
 let invoices = [
-  { id: 'INV-001', p: 'PT Alpha Media', due: '2026-09-18', date: '2026-08-15', amount: 25000000, curr: 'IDR', ppn: true, pph: true, status: 'Due Soon' },
-  { id: 'INV-002', p: 'PT Beta Teknologi', due: '2026-09-10', date: '2026-08-10', amount: 18000000, curr: 'IDR', ppn: true, pph: true, status: 'Overdue' },
-  { id: 'INV-003', p: 'PT Gamma Rekatama', due: '2026-09-20', date: '2026-08-20', amount: 30000000, curr: 'IDR', ppn: true, pph: false, status: 'Paid' },
-  { id: 'INV-004', p: 'PT Delta Indonesia', due: '2026-09-30', date: '2026-08-30', amount: 15000000, curr: 'IDR', ppn: true, pph: true, status: 'On Track' },
-  { id: 'INV-005', p: 'PT Alpha Media', due: '2026-09-12', date: '2026-08-12', amount: 22000000, curr: 'IDR', ppn: true, pph: true, status: 'Overdue' }
+  { id: 'INV-001', p: 'PT Alpha Media', due: '2026-09-18', date: '2026-08-15', amount: 25000000, ppn: true, pbjt: true, pph: true, status: 'Due Soon' },
+  { id: 'INV-002', p: 'PT Beta Teknologi', due: '2026-09-10', date: '2026-08-10', amount: 18000000, ppn: true, pbjt: true, pph: true, status: 'Overdue' },
+  { id: 'INV-003', p: 'PT Gamma Rekatama', due: '2026-09-20', date: '2026-08-20', amount: 30000000, ppn: true, pbjt: false, pph: false, status: 'Paid' },
+  { id: 'INV-004', p: 'PT Delta Indonesia', due: '2026-09-30', date: '2026-08-30', amount: 15000000, ppn: true, pbjt: true, pph: true, status: 'On Track' },
+  { id: 'INV-005', p: 'PT Alpha Media', due: '2026-09-12', date: '2026-08-12', amount: 22000000, ppn: true, pbjt: true, pph: true, status: 'Overdue' }
 ];
 
 let partners = [
@@ -667,16 +835,15 @@ let pushLogs = [
   { inv: 'INV-004', p: 'PT Delta Indonesia', h7: false, h3: false, h1: false, email: false, sms: false, wa: false, response: 'Scheduled' }
 ];
 
-// TAX CALCULATION HELPER (INDONESIAN TAX LAWS)
-function calcTax(dpp, hasPpn, hasPph, curr='IDR') {
-  const ppnVal = hasPpn ? dpp * 0.11 : 0; // PPN 11% UU HPP
+// TAX CALCULATION HELPER (UU HPP PPN 11%, PBJT Olahraga 10% UU HKPD, PPh 23 2%)
+function calcTax(dpp, hasPpn, hasPbjt, hasPph) {
+  const ppnVal = hasPpn ? dpp * 0.11 : 0;
+  const pbjtVal = hasPbjt ? dpp * 0.10 : 0; // PBJT Olahraga 10%
   const pphVal = hasPph ? dpp * 0.02 : 0; // PPh 23 (2%)
-  const netPayable = dpp + ppnVal - pphVal;
-  const symbol = curr === 'USD' ? '$' : 'Rp';
-  return { dpp, ppnVal, pphVal, netPayable, symbol };
+  const netPayable = dpp + ppnVal + pbjtVal - pphVal;
+  return { dpp, ppnVal, pbjtVal, pphVal, netPayable };
 }
 
-// LOGO & THEME CONTROLLER
 function toggleTheme() {
   currentTheme = currentTheme === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', currentTheme);
@@ -686,7 +853,7 @@ function toggleTheme() {
   document.getElementById('authLogo').src = logoPath;
 
   document.getElementById('themeIcon').textContent = currentTheme === 'light' ? '🌙' : '☀️';
-  document.getElementById('themeLabel').textContent = currentTheme === 'light' ? 'Dark' : 'Light';
+  document.getElementById('themeLabel').textContent = currentTheme === 'light' ? (currentLang==='en'?'Dark':'Gelap') : (currentLang==='en'?'Light':'Terang');
 }
 
 function setLanguage(lang) {
@@ -699,7 +866,11 @@ function setLanguage(lang) {
   }
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+    if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (i18n[lang][key]) el.placeholder = i18n[lang][key];
   });
   updateClock();
   renderAll();
@@ -713,16 +884,14 @@ function handleAuth(e) {
   
   document.getElementById('authModal').style.display = 'none';
   applyRBAC();
-  showToast(`🔒 ${currentLang === 'en' ? 'Authenticated as' : 'Terautentikasi sebagai'} ${currentUser} (${currentRole.toUpperCase()})`);
+  showToast(`🔒 Authenticated as ${currentUser} (${currentRole.toUpperCase()})`);
   updateClock();
   renderAll();
 }
 
-// ROLE-BASED ACCESS CONTROL (RBAC) UI APPLIER
 function applyRBAC() {
   document.getElementById('roleBadge').textContent = `ROLE: ${currentRole.toUpperCase()}`;
-  const adminElements = document.querySelectorAll('.rbac-admin-only');
-  adminElements.forEach(el => {
+  document.querySelectorAll('.rbac-admin-only').forEach(el => {
     el.style.display = currentRole === 'admin' ? 'inline-flex' : 'none';
   });
 }
@@ -735,7 +904,9 @@ function updateClock() {
   else if (hours >= 12 && hours < 15) gKey = "gAfternoon";
   else if (hours >= 15 && hours < 18) gKey = "gEvening";
 
-  document.getElementById('dynGreeting').textContent = `${i18n[currentLang][gKey]}, ${currentUser} 👋`;
+  const greetingWord = currentLang === 'en' ? (gKey==='gMorning'?'Good Morning':gKey==='gAfternoon'?'Good Afternoon':gKey==='gEvening'?'Good Evening':'Good Night') : (gKey==='gMorning'?'Selamat Pagi':gKey==='gAfternoon'?'Selamat Siang':gKey==='gEvening'?'Selamat Sore':'Selamat Malam');
+  document.getElementById('dynGreeting').textContent = `${greetingWord}, ${currentUser} 👋`;
+  
   const timeStr = now.toLocaleTimeString(currentLang === 'en' ? 'en-US' : 'id-ID', { hour12: false });
   const dateStr = now.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
   document.getElementById('realTimeClock').textContent = `${dateStr} · ${timeStr}`;
@@ -756,7 +927,7 @@ function filterFromDash(status) {
   renderInvoices();
 }
 
-function fmt(n, curr='IDR') { return (curr === 'USD' ? '$' : 'Rp') + n.toLocaleString('id-ID'); }
+function fmt(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
 function pill(s) {
   let c = s === 'Paid' ? 'paid' : s === 'Overdue' ? 'over' : s === 'Due Soon' ? 'due' : 'on';
   return `<span class="pill ${c}">${s.toUpperCase()}</span>`;
@@ -784,7 +955,7 @@ function renderDashboardUrgent() {
     <tr>
       <td><b>${x.id}</b></td>
       <td>${x.p}</td>
-      <td style="font-weight:700">${fmt(x.amount, x.curr)}</td>
+      <td style="font-weight:700">${fmt(calcTax(x.amount, x.ppn, x.pbjt, x.pph).netPayable)}</td>
       <td>${pill(x.status)}</td>
       <td><button class="btn btn-xendit" onclick="openXenditModal('${x.id}')">Pay via Xendit</button></td>
     </tr>
@@ -805,14 +976,14 @@ function renderInvoices() {
   const filtered = invoices.filter(x => x.id.toLowerCase().includes(q) || x.p.toLowerCase().includes(q) || x.status.toLowerCase().includes(q));
   
   document.getElementById('invoiceRows').innerHTML = filtered.map(x => {
-    const t = calcTax(x.amount, x.ppn, x.pph, x.curr);
+    const t = calcTax(x.amount, x.ppn, x.pbjt, x.pph);
     return `
       <tr class="clickable" onclick="openInvoiceDetail('${x.id}')">
         <td><b>${x.id}</b></td>
         <td>${x.p}</td>
         <td>${x.due}</td>
-        <td style="font-weight:700">${fmt(t.dpp, x.curr)}</td>
-        <td><small style="font-size:11px">PPN 11%: ${fmt(t.ppnVal, x.curr)}<br>PPh 23: -${fmt(t.pphVal, x.curr)}</small></td>
+        <td style="font-weight:700">${fmt(t.netPayable)}</td>
+        <td><small style="font-size:11px">PPN: ${fmt(t.ppnVal)}<br>PBJT: ${fmt(t.pbjtVal)}<br>PPh 23: -${fmt(t.pphVal)}</small></td>
         <td>${pill(x.status)}</td>
         <td>
           ${x.status === 'Paid' 
@@ -830,14 +1001,14 @@ function renderInvoices() {
     if (matchedPartner.length > 0) {
       searchBreakdownBox.style.display = 'block';
       const unpaid = matchedPartner.filter(x => x.status !== 'Paid');
-      const totalDebt = unpaid.reduce((sum, item) => sum + calcTax(item.amount, item.ppn, item.pph, item.curr).netPayable, 0);
+      const totalDebt = unpaid.reduce((sum, item) => sum + calcTax(item.amount, item.ppn, item.pbjt, item.pph).netPayable, 0);
 
       document.getElementById('bkTotalDebt').textContent = fmt(totalDebt);
       document.getElementById('bkUnpaidCount').textContent = `${unpaid.length} Active Unpaid Tax Invoices`;
       document.getElementById('bkHistoryRows').innerHTML = matchedPartner.map(h => `
         <div style="display:flex; justify-content:space-between; font-size:12px">
           <span>${h.id} (${h.due})</span>
-          <b>${fmt(calcTax(h.amount, h.ppn, h.pph, h.curr).netPayable)} - <small style="color:${h.status==='Paid'?'var(--green)':'var(--red)'}">${h.status}</small></b>
+          <b>${fmt(calcTax(h.amount, h.ppn, h.pbjt, h.pph).netPayable)} - <small style="color:${h.status==='Paid'?'var(--green)':'var(--red)'}">${h.status}</small></b>
         </div>
       `).join('');
     } else {
@@ -854,20 +1025,19 @@ function openInvoiceDetail(id) {
   if (!x) return;
   go('invoiceDetail');
 
-  const tax = calcTax(x.amount, x.ppn, x.pph, x.curr);
+  const tax = calcTax(x.amount, x.ppn, x.pbjt, x.pph);
 
   document.getElementById('dInvoice').textContent = x.id;
   document.getElementById('dPartner').textContent = x.p;
-  document.getElementById('dDpp').textContent = fmt(tax.dpp, x.curr);
-  document.getElementById('dPpn').textContent = fmt(tax.ppnVal, x.curr);
-  document.getElementById('dPph').textContent = `-${fmt(tax.pphVal, x.curr)}`;
-  document.getElementById('dNet').textContent = fmt(tax.netPayable, x.curr);
-  document.getElementById('dDate').textContent = x.date;
-  document.getElementById('dDue').textContent = x.due;
+  document.getElementById('dDpp').textContent = fmt(tax.dpp);
+  document.getElementById('dPpn').textContent = fmt(tax.ppnVal);
+  document.getElementById('dPbjt').textContent = fmt(tax.pbjtVal);
+  document.getElementById('dPph').textContent = `-${fmt(tax.pphVal)}`;
+  document.getElementById('dNet').textContent = fmt(tax.netPayable);
   document.getElementById('dStatusBadge').innerHTML = pill(x.status);
 
   const done = x.status === 'Paid';
-  document.getElementById('dPaymentText').textContent = done ? 'PAID — Settled via Xendit Gateway' : 'Belum Dibayar';
+  document.getElementById('dPaymentText').textContent = done ? (currentLang==='en'?'PAID — Settled via Xendit Gateway':'LUNAS — Selesai via Xendit') : (currentLang==='en'?'Unpaid':'Belum Dibayar');
   document.getElementById('dPaymentAction').innerHTML = done 
     ? `<span style="color:var(--green); font-weight:800; font-size:13px">✓ Settled</span>` 
     : `<button class="btn btn-xendit" onclick="openXenditModal('${x.id}')">Pay via Xendit</button>`;
@@ -886,20 +1056,20 @@ function openInvoiceDetail(id) {
   `).join('');
 }
 
-// PDF GENERATOR FEATURE
 function generatePDF() {
   const x = invoices.find(a => a.id === selectedInvoiceId);
   if (!x) return;
-  const tax = calcTax(x.amount, x.ppn, x.pph, x.curr);
+  const tax = calcTax(x.amount, x.ppn, x.pbjt, x.pph);
 
   document.getElementById('pdfTag').textContent = x.id;
   document.getElementById('pdfPartner').textContent = x.p;
   document.getElementById('pdfDate').textContent = x.date;
   document.getElementById('pdfDue').textContent = x.due;
-  document.getElementById('pdfDpp').textContent = fmt(tax.dpp, x.curr);
-  document.getElementById('pdfPpn').textContent = fmt(tax.ppnVal, x.curr);
-  document.getElementById('pdfPph').textContent = `-${fmt(tax.pphVal, x.curr)}`;
-  document.getElementById('pdfNet').textContent = fmt(tax.netPayable, x.curr);
+  document.getElementById('pdfDpp').textContent = fmt(tax.dpp);
+  document.getElementById('pdfPpn').textContent = fmt(tax.ppnVal);
+  document.getElementById('pdfPbjt').textContent = fmt(tax.pbjtVal);
+  document.getElementById('pdfPph').textContent = `-${fmt(tax.pphVal)}`;
+  document.getElementById('pdfNet').textContent = fmt(tax.netPayable);
   document.getElementById('pdfSigner').textContent = `${currentUser} — Authorized Officer`;
 
   const element = document.getElementById('pdfTemplate');
@@ -919,7 +1089,6 @@ function generatePDF() {
   });
 }
 
-// AI CHATBOT SIMULATOR
 function sendAiSimulatedMessage() {
   const input = document.getElementById('aiChatInput');
   const text = input.value.trim();
@@ -931,9 +1100,9 @@ function sendAiSimulatedMessage() {
 
   let botReply = "Bot System: Message logged into partner audit history.";
   const lower = text.toLowerCase();
-  if (lower.includes('paid') || lower.includes('transfer')) {
+  if (lower.includes('paid') || lower.includes('transfer') || lower.includes('lunas')) {
     botReply = "Bot System: Payment receipt detected. Updating status to Pending Settlement Verification.";
-  } else if (lower.includes('extend') || lower.includes('tempo')) {
+  } else if (lower.includes('extend') || lower.includes('tempo') || lower.includes('perpanjang')) {
     botReply = "Bot System: Extension request forwarded to GBK Finance PIC. Overdue score frozen for 3 days.";
   }
 
@@ -943,16 +1112,15 @@ function sendAiSimulatedMessage() {
   }, 600);
 }
 
-// TAX PREVIEW IN MODAL
 function calculateTaxPreview() {
   const amount = parseFloat(document.getElementById('newInvAmount').value) || 0;
-  const curr = document.getElementById('newInvCurrency').value;
   const hasPpn = document.getElementById('chkPpn').checked;
+  const hasPbjt = document.getElementById('chkPbjt').checked;
   const hasPph = document.getElementById('chkPph').checked;
 
-  const t = calcTax(amount, hasPpn, hasPph, curr);
+  const t = calcTax(amount, hasPpn, hasPbjt, hasPph);
   document.getElementById('taxPreviewText').textContent = 
-    `Base DPP: ${fmt(t.dpp, curr)} | PPN 11%: ${fmt(t.ppnVal, curr)} | PPh 23: -${fmt(t.pphVal, curr)} | Net: ${fmt(t.netPayable, curr)}`;
+    `Base DPP: ${fmt(t.dpp)} | PPN (11%): ${fmt(t.ppnVal)} | PBJT Olahraga (10%): ${fmt(t.pbjtVal)} | PPh 23 (2%): -${fmt(t.pphVal)} | Net: ${fmt(t.netPayable)}`;
 }
 
 function openNewInvoiceModal() {
@@ -967,12 +1135,12 @@ function handleCreateInvoice(e) {
   const id = document.getElementById('newInvId').value;
   const p = document.getElementById('newInvPartner').value.trim();
   const amount = parseFloat(document.getElementById('newInvAmount').value);
-  const curr = document.getElementById('newInvCurrency').value;
   const ppn = document.getElementById('chkPpn').checked;
+  const pbjt = document.getElementById('chkPbjt').checked;
   const pph = document.getElementById('chkPph').checked;
   const due = document.getElementById('newInvDue').value;
 
-  invoices.unshift({ id, p, due, date: new Date().toISOString().split('T')[0], amount, curr, ppn, pph, status: 'On Track' });
+  invoices.unshift({ id, p, due, date: new Date().toISOString().split('T')[0], amount, ppn, pbjt, pph, status: 'On Track' });
   pushLogs.unshift({ inv: id, p, h7: false, h3: false, h1: false, email: false, sms: false, wa: false, response: 'Scheduled' });
 
   closeModal('newInvoiceModal');
@@ -984,10 +1152,10 @@ function openXenditModal(id) {
   selectedInvoiceId = id;
   const x = invoices.find(a => a.id === id);
   if (!x) return;
-  const t = calcTax(x.amount, x.ppn, x.pph, x.curr);
+  const t = calcTax(x.amount, x.ppn, x.pbjt, x.pph);
 
   document.getElementById('xenditInvTag').textContent = `Tag: ${x.id} • ${x.p}`;
-  document.getElementById('xenditAmount').textContent = fmt(t.netPayable, x.curr);
+  document.getElementById('xenditAmount').textContent = fmt(t.netPayable);
   document.getElementById('xenditModal').style.display = 'flex';
 }
 
@@ -1063,7 +1231,6 @@ function showToast(msg) {
   setTimeout(() => t.remove(), 4000);
 }
 
-// INITIALIZATION
 updateClock();
 renderAll();
 </script>
